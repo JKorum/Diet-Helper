@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_validator_1 = require("express-validator");
 var AppRouter_1 = require("../../AppRouter");
 var MetadataKeys_1 = require("./MetadataKeys");
 function controller() {
@@ -13,13 +12,8 @@ function controller() {
             var path = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.path, constructor.prototype, key);
             var middlewares = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.middlewares, constructor.prototype, key) || [];
             var routeHandler = constructor.prototype[key];
-            // temp -> extract logic in module
-            var validator = [
-                express_validator_1.query('q')
-                    .notEmpty()
-                    .isString()
-            ];
-            router[method](path, validator, middlewares, routeHandler);
+            var validators = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.validators, constructor.prototype, key) || [];
+            router[method](path, validators, middlewares, routeHandler);
         }
     };
 }

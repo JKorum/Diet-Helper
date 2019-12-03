@@ -1,9 +1,18 @@
-import { RecipesRequest } from '../controllers/ApiController'
+import { ApiRequestQuery } from '../controllers/ApiController'
 
-export const buildQuery = (data: RecipesRequest): string => {
-  const { q, from, diet, health, calories } = data
+export const buildQuery = (data: ApiRequestQuery): string => {
+  const { q, from, diet, health, calories, ingr } = data
 
-  let result = `?q=${encodeURIComponent(q)}`
+  let result: string
+
+  /* process query for api/analysis/line */
+  if (typeof ingr === 'string') {
+    result = `?ingr=${encodeURIComponent(ingr)}`
+    return result.toLowerCase()
+  }
+
+  /* process query for api/recipes */
+  result = `?q=${encodeURIComponent(q)}`
 
   if (typeof from === 'string') {
     result = result + `&from=${from}`

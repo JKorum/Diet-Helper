@@ -53,8 +53,11 @@ var express_validator_1 = require("express-validator");
 require("reflect-metadata");
 var decorators_1 = require("./decorators");
 var middlewares_1 = require("../middlewares");
-var id = process.env.APP_ID_RECIPES;
-var key = process.env.APP_KEY_RECIPES;
+var validators_1 = require("../validators");
+var idR = process.env.APP_ID_RECIPES;
+var keyR = process.env.APP_KEY_RECIPES;
+var idA = process.env.APP_ID_ANALYSIS;
+var keyA = process.env.APP_KEY_ANALYSIS;
 var ApiController = /** @class */ (function () {
     function ApiController() {
     }
@@ -72,27 +75,163 @@ var ApiController = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 5, , 6]);
-                        if (!(typeof id === 'string' &&
-                            typeof key === 'string' &&
-                            typeof req.query === 'string') //change
-                        ) return [3 /*break*/, 3]; //change
-                        return [4 /*yield*/, axios_1.default.get("https://api.edamam.com/search" + req.query + "&app_id=" + id + "&app_key=" + key)];
+                        if (!(typeof idR === 'string' &&
+                            typeof keyR === 'string' &&
+                            typeof req.query === 'string')) return [3 /*break*/, 3];
+                        return [4 /*yield*/, axios_1.default.get("https://api.edamam.com/search" + req.query + "&app_id=" + idR + "&app_key=" + keyR)];
                     case 2:
                         result = _a.sent();
                         if (result.status === 200) {
                             res.status(200).send(result.data);
+                            return [2 /*return*/];
                         }
                         else {
-                            console.log(result);
-                            res.status(404).send({ error: 'Failed to fetch Edamam data' });
+                            throw new Error('failed to fetch edamam');
                         }
                         return [3 /*break*/, 4];
-                    case 3: throw new Error('Edamam credentials unaccessible'); //change
+                    case 3: throw new Error('invalid: id, key or query for API');
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         err_1 = _a.sent();
-                        // console.log(err)
-                        res.status(500).send({ error: 'Internal Server Error' });
+                        // got unsuccesful response from api
+                        if (err_1.response) {
+                            if (err_1.response.status === 404) {
+                                res.status(404).send({ error: 'failed to fetch edamam' });
+                                return [2 /*return*/];
+                            }
+                        }
+                        else {
+                            // no response from api || credentials OR query error || unknown error
+                            console.log(err_1.message);
+                            res.status(500).send({ error: 'internal server error' });
+                            return [2 /*return*/];
+                        }
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ApiController.prototype.lineAnalysis = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var errors, result, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        errors = express_validator_1.validationResult(req);
+                        if (!errors.isEmpty()) {
+                            res.status(422).send({ error: "query param 'ingr' not provided" });
+                            return [2 /*return*/];
+                        }
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 5, , 6]);
+                        if (!(typeof idA === 'string' &&
+                            typeof keyA === 'string' &&
+                            typeof req.query === 'string')) return [3 /*break*/, 3];
+                        return [4 /*yield*/, axios_1.default.get("https://api.edamam.com/api/nutrition-data" + req.query + "&app_id=" + idA + "&app_key=" + keyA)];
+                    case 2:
+                        result = _a.sent();
+                        if (result.status === 200) {
+                            res.status(200).send(result.data);
+                            return [2 /*return*/];
+                        }
+                        else {
+                            throw new Error('failed to fetch edamam');
+                        }
+                        return [3 /*break*/, 4];
+                    case 3: throw new Error('invalid: id, key or query for API');
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        err_2 = _a.sent();
+                        // got unsuccesful response from api
+                        if (err_2.response) {
+                            if (err_2.response.status === 404) {
+                                res.status(404).send({ error: 'failed to fetch edamam' });
+                                return [2 /*return*/];
+                            }
+                            else if (err_2.response.status === 422) {
+                                res.status(422).send({ error: 'edamam failed to parse data' });
+                                return [2 /*return*/];
+                            }
+                            else if (err_2.response.status === 555) {
+                                res.status(555).send({ error: 'edamam failed to parse data' });
+                                return [2 /*return*/];
+                            }
+                        }
+                        else {
+                            // no response from api || credentials OR query error || unknown error
+                            console.log(err_2.message);
+                            res.status(500).send({ error: 'internal server error' });
+                            return [2 /*return*/];
+                        }
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ApiController.prototype.recipeAnalysis = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var errors, config, result, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        errors = express_validator_1.validationResult(req);
+                        if (!errors.isEmpty()) {
+                            res
+                                .status(422)
+                                .send({ error: "fields 'title' and 'ingr' should be provided" });
+                            return [2 /*return*/];
+                        }
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 5, , 6]);
+                        if (!(typeof idA === 'string' &&
+                            typeof keyA === 'string' &&
+                            Array.isArray(req.body.ingr))) return [3 /*break*/, 3];
+                        config = {
+                            url: "https://api.edamam.com/api/nutrition-details?app_id=" + idA + "&app_key=" + keyA,
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            data: req.body
+                        };
+                        return [4 /*yield*/, axios_1.default(config)];
+                    case 2:
+                        result = _a.sent();
+                        if (result.status === 200) {
+                            res.status(200).send(result.data);
+                            return [2 /*return*/];
+                        }
+                        else {
+                            throw new Error('failed to fetch edamam');
+                        }
+                        return [3 /*break*/, 4];
+                    case 3: throw new Error('invalid: id, key or body for API');
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        err_3 = _a.sent();
+                        // got unsuccesful response from api
+                        if (err_3.response) {
+                            if (err_3.response.status === 404) {
+                                res.status(404).send({ error: 'failed to fetch edamam' });
+                                return [2 /*return*/];
+                            }
+                            else if (err_3.response.status === 422) {
+                                res.status(422).send({ error: 'edamam failed to parse data' });
+                                return [2 /*return*/];
+                            }
+                            else if (err_3.response.status === 555) {
+                                res.status(555).send({ error: 'edamam failed to parse data' });
+                                return [2 /*return*/];
+                            }
+                        }
+                        else {
+                            // no response from api || credentials OR body error || unknown error
+                            console.log(err_3.message);
+                            res.status(500).send({ error: 'internal server error' });
+                            return [2 /*return*/];
+                        }
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }
@@ -101,30 +240,27 @@ var ApiController = /** @class */ (function () {
     };
     __decorate([
         decorators_1.get('/recipes'),
-        decorators_1.use(middlewares_1.transform),
+        decorators_1.use(validators_1.recipesValidator, middlewares_1.transformQuery),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", Promise)
     ], ApiController.prototype, "fetchRecipes", null);
+    __decorate([
+        decorators_1.get('/recipes/analysis/line'),
+        decorators_1.use(validators_1.lineValidator, middlewares_1.transformQuery),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object, Object]),
+        __metadata("design:returntype", Promise)
+    ], ApiController.prototype, "lineAnalysis", null);
+    __decorate([
+        decorators_1.post('/recipes/analysis/recipe'),
+        decorators_1.use(validators_1.recipeValidator, middlewares_1.transformBody),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object, Object]),
+        __metadata("design:returntype", Promise)
+    ], ApiController.prototype, "recipeAnalysis", null);
     ApiController = __decorate([
         decorators_1.controller()
     ], ApiController);
     return ApiController;
 }());
-/*
-
-result.data -> structure
-
-{
-  q: 'chicken',
-  from: 0,
-  to: 10,
-  more: true,
-  count: 168103,
-  hits: [
-    { recipe: [Object], bookmarked: false, bought: false },
-    { recipe: [Object], bookmarked: false, bought: false },
-    { recipe: [Object], bookmarked: false, bought: false },
-  ]
-}
-*/

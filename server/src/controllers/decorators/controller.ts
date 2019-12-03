@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { query } from 'express-validator'
+import { query, ValidationChain } from 'express-validator'
 import { AppRouter } from '../../AppRouter'
 import { MetadataKeys } from './MetadataKeys'
 import { Methods } from './Methods'
@@ -31,14 +31,14 @@ export function controller(): Function {
 
       const routeHandler = constructor.prototype[key]
 
-      // temp -> extract logic in module
-      const validator = [
-        query('q')
-          .notEmpty()
-          .isString()
-      ]
+      const validators: ValidationChain[] =
+        Reflect.getMetadata(
+          MetadataKeys.validators,
+          constructor.prototype,
+          key
+        ) || []
 
-      router[method](path, validator, middlewares, routeHandler)
+      router[method](path, validators, middlewares, routeHandler)
     }
   }
 }

@@ -9,10 +9,16 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var MetadataKeys_1 = require("./MetadataKeys");
 require("reflect-metadata");
-function use(handler) {
+function use(validator, handler) {
     return function (prototype, prop, desc) {
-        var middlewares = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.middlewares, prototype, prop) || [];
-        Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.middlewares, __spreadArrays(middlewares, [handler]), prototype, prop);
+        if (validator) {
+            var validators = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.validators, prototype, prop) || [];
+            Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.validators, __spreadArrays(validators, [validator]), prototype, prop);
+        }
+        if (handler) {
+            var middlewares = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.middlewares, prototype, prop) || [];
+            Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.middlewares, __spreadArrays(middlewares, [handler]), prototype, prop);
+        }
     };
 }
 exports.use = use;
