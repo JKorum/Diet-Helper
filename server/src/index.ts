@@ -13,6 +13,7 @@ const port = process.env.PORT || 3003
 
 import './controllers/ApiController'
 import './controllers/AuthController'
+import './controllers/UserController'
 
 const pass = process.env.COOKIE_PASS
 

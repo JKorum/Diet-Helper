@@ -4,4 +4,5 @@ var Methods;
 (function (Methods) {
     Methods["get"] = "get";
     Methods["post"] = "post";
+    Methods["patch"] = "patch";
 })(Methods = exports.Methods || (exports.Methods = {}));

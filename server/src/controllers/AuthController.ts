@@ -18,7 +18,7 @@ interface RegisterReqBody {
   password: string
 }
 
-interface LoginReqBody {
+export interface LoginReqBody {
   email: string
   password: string
 }

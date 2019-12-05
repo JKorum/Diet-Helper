@@ -1,4 +1,5 @@
 export enum Methods {
   get = 'get',
-  post = 'post'
+  post = 'post',
+  patch = 'patch'
 }

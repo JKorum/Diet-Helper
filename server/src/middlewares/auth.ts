@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import { CookieRequest } from '../controllers/AuthController'
 import { User } from '../database/models'
 

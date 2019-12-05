@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import { Methods } from './Methods'
 import { MetadataKeys } from './MetadataKeys'
 
-function routeBinder(method: string): Function {
+function routeBinder(method: Methods): Function {
   // decorator factory ->
   return function(path: string): Function {
     // decorator ->
@@ -19,3 +19,4 @@ function routeBinder(method: string): Function {
 
 export const get = routeBinder(Methods.get)
 export const post = routeBinder(Methods.post)
+export const patch = routeBinder(Methods.patch)
