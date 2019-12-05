@@ -13,7 +13,12 @@ function use(validator, handler) {
     return function (prototype, prop, desc) {
         if (validator) {
             var validators = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.validators, prototype, prop) || [];
-            Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.validators, __spreadArrays(validators, [validator]), prototype, prop);
+            if (Array.isArray(validator)) {
+                Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.validators, __spreadArrays(validators, validator), prototype, prop);
+            }
+            else {
+                Reflect.defineMetadata(MetadataKeys_1.MetadataKeys.validators, __spreadArrays(validators, [validator]), prototype, prop);
+            }
         }
         if (handler) {
             var middlewares = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.middlewares, prototype, prop) || [];

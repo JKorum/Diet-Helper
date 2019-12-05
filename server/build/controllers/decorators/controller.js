@@ -13,7 +13,13 @@ function controller() {
             var middlewares = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.middlewares, constructor.prototype, key) || [];
             var routeHandler = constructor.prototype[key];
             var validators = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.validators, constructor.prototype, key) || [];
-            router[method](path, validators, middlewares, routeHandler);
+            var auth = Reflect.getMetadata(MetadataKeys_1.MetadataKeys.auth, constructor.prototype, key);
+            if (!auth) {
+                router[method](path, validators, middlewares, routeHandler);
+            }
+            else {
+                router[method](path, auth, validators, middlewares, routeHandler);
+            }
         }
     };
 }

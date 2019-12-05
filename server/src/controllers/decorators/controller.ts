@@ -1,8 +1,9 @@
 import { RequestHandler } from 'express'
-import { query, ValidationChain } from 'express-validator'
+import { ValidationChain } from 'express-validator'
 import { AppRouter } from '../../AppRouter'
 import { MetadataKeys } from './MetadataKeys'
 import { Methods } from './Methods'
+import { AuthMiddleware } from '../decorators'
 
 export function controller(): Function {
   const router = AppRouter.getInstance()
@@ -38,7 +39,17 @@ export function controller(): Function {
           key
         ) || []
 
-      router[method](path, validators, middlewares, routeHandler)
+      const auth: AuthMiddleware | undefined = Reflect.getMetadata(
+        MetadataKeys.auth,
+        constructor.prototype,
+        key
+      )
+
+      if (!auth) {
+        router[method](path, validators, middlewares, routeHandler)
+      } else {
+        router[method](path, auth, validators, middlewares, routeHandler)
+      }
     }
   }
 }

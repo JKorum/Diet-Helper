@@ -8,3 +8,4 @@ __export(require("./Methods"));
 __export(require("./MetadataKeys"));
 __export(require("./controller"));
 __export(require("./use"));
+__export(require("./auth"));
