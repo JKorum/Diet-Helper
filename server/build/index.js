@@ -15,6 +15,7 @@ var port = process.env.PORT || 3003;
 require("./controllers/ApiController");
 require("./controllers/AuthController");
 require("./controllers/UserController");
+require("./controllers/RecipeController");
 var pass = process.env.COOKIE_PASS;
 if (!pass) {
     console.log(chalk_1.default.black.bgRed('env variable COOKIE_PASS inaccessible'));

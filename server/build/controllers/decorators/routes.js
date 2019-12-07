@@ -16,3 +16,4 @@ function routeBinder(method) {
 exports.get = routeBinder(Methods_1.Methods.get);
 exports.post = routeBinder(Methods_1.Methods.post);
 exports.patch = routeBinder(Methods_1.Methods.patch);
+exports.del = routeBinder(Methods_1.Methods.del);

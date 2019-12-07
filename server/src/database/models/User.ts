@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose, { Document, DocumentToObjectOptions } from 'mongoose'
 import bcrypt from 'bcryptjs'
 import chalk from 'chalk'
 
@@ -12,6 +12,15 @@ export interface QueriedUserDocument extends Document {
   name?: string
   email?: string
   password?: string
+}
+
+const options: DocumentToObjectOptions = {
+  virtuals: true,
+  transform(doc, ret, opts) {
+    ret.id = ret._id
+    delete ret._id
+    return ret
+  }
 }
 
 const UserSchema = new mongoose.Schema(
@@ -31,9 +40,16 @@ const UserSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON: options
   }
 )
+
+UserSchema.virtual('recipes', {
+  ref: 'Recipe',
+  localField: '_id',
+  foreignField: 'owner'
+})
 
 UserSchema.pre<UserDocument>('save', async function() {
   const salt = process.env.SALT

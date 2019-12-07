@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { validationResult } from 'express-validator'
-import { controller, patch, auth, use } from './decorators'
+import { controller, patch, auth, use, get } from './decorators'
 import { CookieRequest } from './AuthController'
 import { authHandler } from '../middlewares'
 import { updateValidator } from '../validators'
@@ -62,6 +62,24 @@ class UserController {
           res.status(200).send({ id, name, email })
           return
         }
+      }
+    } catch (err) {
+      res.status(500).send({ error: 'internal server error' })
+      return
+    }
+  }
+
+  @get('/users/synchronize')
+  @auth(authHandler)
+  async synchronize(req: CookieRequest, res: Response): Promise<void> {
+    try {
+      const user = req.user
+      if (!user) {
+        throw new Error('failed to load user')
+      } else {
+        const data = await user.populate('recipes').execPopulate()
+        res.status(200).send(data)
+        return
       }
     } catch (err) {
       res.status(500).send({ error: 'internal server error' })

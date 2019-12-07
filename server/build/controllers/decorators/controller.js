@@ -24,3 +24,8 @@ function controller() {
     };
 }
 exports.controller = controller;
+// controllers\decorators\controller.js:18
+// [dev:server]                 router[method](path, validators, middlewares, routeHandler);
+// [dev:server]                               ^
+// [dev:server]
+// [dev:server] TypeError: router[method] is not a function

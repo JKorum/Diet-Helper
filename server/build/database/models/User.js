@@ -42,6 +42,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importDefault(require("mongoose"));
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var chalk_1 = __importDefault(require("chalk"));
+var options = {
+    virtuals: true,
+    transform: function (doc, ret, opts) {
+        ret.id = ret._id;
+        delete ret._id;
+        return ret;
+    }
+};
 var UserSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
@@ -57,7 +65,13 @@ var UserSchema = new mongoose_1.default.Schema({
         required: true
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: options
+});
+UserSchema.virtual('recipes', {
+    ref: 'Recipe',
+    localField: '_id',
+    foreignField: 'owner'
 });
 UserSchema.pre('save', function () {
     return __awaiter(this, void 0, void 0, function () {

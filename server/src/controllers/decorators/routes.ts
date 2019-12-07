@@ -20,3 +20,4 @@ function routeBinder(method: Methods): Function {
 export const get = routeBinder(Methods.get)
 export const post = routeBinder(Methods.post)
 export const patch = routeBinder(Methods.patch)
+export const del = routeBinder(Methods.del)

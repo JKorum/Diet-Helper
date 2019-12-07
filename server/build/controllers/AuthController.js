@@ -54,7 +54,6 @@ var decorators_1 = require("./decorators");
 var models_1 = require("../database/models");
 var validators_1 = require("../validators");
 var middlewares_1 = require("../middlewares");
-var chalk_1 = __importDefault(require("chalk"));
 var AuthController = /** @class */ (function () {
     function AuthController() {
     }
@@ -83,7 +82,7 @@ var AuthController = /** @class */ (function () {
                         _a.sent();
                         res.status(201).send();
                         return [2 /*return*/];
-                    case 3: throw new Error(chalk_1.default.black.bgRed('req.session inaccessible'));
+                    case 3: throw new Error('req.session inaccessible');
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         err_1 = _a.sent();
@@ -135,14 +134,13 @@ var AuthController = /** @class */ (function () {
                                 return [2 /*return*/];
                             }
                             else {
-                                throw new Error(chalk_1.default.black.bgRed('req.session inaccessible'));
+                                throw new Error('req.session inaccessible');
                             }
                         }
                         _b.label = 5;
                     case 5: return [3 /*break*/, 7];
                     case 6:
                         err_2 = _b.sent();
-                        console.log(err_2.message);
                         res.status(500).send({ error: 'internal server error' });
                         return [2 /*return*/];
                     case 7: return [2 /*return*/];
@@ -158,14 +156,45 @@ var AuthController = /** @class */ (function () {
                 return;
             }
             else {
-                throw new Error(chalk_1.default.black.bgRed('req.session inaccessible'));
+                throw new Error('req.session inaccessible');
             }
         }
         catch (err) {
-            console.log(err.message);
             res.status(500).send({ error: 'internal server error' });
             return;
         }
+    };
+    AuthController.prototype.unregister = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 6, , 7]);
+                        user = req.user;
+                        if (!!user) return [3 /*break*/, 1];
+                        throw new Error('failed to load user');
+                    case 1:
+                        if (!!req.session) return [3 /*break*/, 2];
+                        throw new Error('req.session inaccessible');
+                    case 2: return [4 /*yield*/, models_1.Recipe.deleteMany({ owner: user.id })];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, user.remove()];
+                    case 4:
+                        _a.sent();
+                        req.session.reset();
+                        res.status(204).send();
+                        return [2 /*return*/];
+                    case 5: return [3 /*break*/, 7];
+                    case 6:
+                        err_3 = _a.sent();
+                        res.status(500).send({ error: 'internal server error' });
+                        return [2 /*return*/];
+                    case 7: return [2 /*return*/];
+                }
+            });
+        });
     };
     __decorate([
         decorators_1.post('/register'),
@@ -188,6 +217,13 @@ var AuthController = /** @class */ (function () {
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], AuthController.prototype, "logout", null);
+    __decorate([
+        decorators_1.del('/unregister'),
+        decorators_1.auth(middlewares_1.authHandler),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object, Object]),
+        __metadata("design:returntype", Promise)
+    ], AuthController.prototype, "unregister", null);
     AuthController = __decorate([
         decorators_1.controller()
     ], AuthController);

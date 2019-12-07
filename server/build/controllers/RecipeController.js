@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -48,87 +59,108 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_validator_1 = require("express-validator");
 var decorators_1 = require("./decorators");
 var middlewares_1 = require("../middlewares");
-var validators_1 = require("../validators");
 var models_1 = require("../database/models");
-var UserController = /** @class */ (function () {
-    function UserController() {
+var validators_1 = require("../validators");
+var RecipeController = /** @class */ (function () {
+    function RecipeController() {
     }
-    UserController.prototype.updateCredentials = function (req, res) {
+    RecipeController.prototype.create = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var errors, user, _a, newName, newEmail, newPassword, id, name_1, email, updated, id, name_2, email, err_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var errors, user, data, recipe, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         errors = express_validator_1.validationResult(req);
                         if (!errors.isEmpty()) {
                             res.status(422).send({
-                                error: 'optional: newName (min 2 chars), newEmail (valid) and newPassword (min 6 chars)'
+                                error: {
+                                    required: {
+                                        strings: ['label', 'image', 'source', 'url'],
+                                        arrayOfStrings: [
+                                            'dietLabels',
+                                            'healthLabels',
+                                            'cautions',
+                                            'ingredientLines'
+                                        ],
+                                        numbers: ['yield', 'calories', 'totalWeight', 'totalTime']
+                                    }
+                                }
                             });
                             return [2 /*return*/];
                         }
-                        _b.label = 1;
+                        _a.label = 1;
                     case 1:
-                        _b.trys.push([1, 13, , 14]);
+                        _a.trys.push([1, 5, , 6]);
                         user = req.user;
                         if (!!user) return [3 /*break*/, 2];
-                        res.status(500).send({ error: 'internal server error' });
-                        return [2 /*return*/];
+                        throw new Error('failed to load user');
                     case 2:
-                        _a = req.body, newName = _a.newName, newEmail = _a.newEmail, newPassword = _a.newPassword;
-                        if (!(newName && newEmail && newPassword)) return [3 /*break*/, 4];
-                        user.name = newName;
-                        user.email = newEmail;
-                        user.password = newPassword;
-                        return [4 /*yield*/, user.save()];
+                        data = req.body;
+                        recipe = new models_1.Recipe(__assign(__assign({}, data), { owner: user.id }));
+                        return [4 /*yield*/, recipe.save()];
                     case 3:
-                        _b.sent();
-                        id = user.id, name_1 = user.name, email = user.email;
-                        res.status(200).send({ id: id, name: name_1, email: email });
+                        _a.sent();
+                        res.status(200).send(recipe);
                         return [2 /*return*/];
-                    case 4:
-                        if (!newName) return [3 /*break*/, 6];
-                        return [4 /*yield*/, user.update({ name: newName })];
+                    case 4: return [3 /*break*/, 6];
                     case 5:
-                        _b.sent();
-                        _b.label = 6;
-                    case 6:
-                        if (!newEmail) return [3 /*break*/, 8];
-                        return [4 /*yield*/, user.update({ email: newEmail })];
-                    case 7:
-                        _b.sent();
-                        _b.label = 8;
-                    case 8:
-                        if (!newPassword) return [3 /*break*/, 10];
-                        user.password = newPassword;
-                        return [4 /*yield*/, user.save()];
-                    case 9:
-                        _b.sent();
-                        _b.label = 10;
-                    case 10: return [4 /*yield*/, models_1.User.findById(user.id).select('-password')];
-                    case 11:
-                        updated = _b.sent();
-                        if (!updated) {
-                            throw new Error('failed to load updated user');
-                        }
-                        else {
-                            id = updated.id, name_2 = updated.name, email = updated.email;
-                            res.status(200).send({ id: id, name: name_2, email: email });
-                            return [2 /*return*/];
-                        }
-                        _b.label = 12;
-                    case 12: return [3 /*break*/, 14];
-                    case 13:
-                        err_1 = _b.sent();
+                        err_1 = _a.sent();
+                        console.log(err_1.message);
                         res.status(500).send({ error: 'internal server error' });
                         return [2 /*return*/];
-                    case 14: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
-    UserController.prototype.synchronize = function (req, res) {
+    RecipeController.prototype.deleteOne = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, data, err_2;
+            var user, userId, id, recipe, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 7, , 8]);
+                        user = req.user;
+                        if (!!user) return [3 /*break*/, 1];
+                        throw new Error('failed to load user');
+                    case 1:
+                        userId = user.id;
+                        id = req.params.id;
+                        return [4 /*yield*/, models_1.Recipe.findById(id)];
+                    case 2:
+                        recipe = _a.sent();
+                        if (!!recipe) return [3 /*break*/, 3];
+                        res.status(204).send();
+                        return [2 /*return*/];
+                    case 3:
+                        if (!(recipe.owner.toString() !== userId)) return [3 /*break*/, 4];
+                        res.status(403).send({ error: 'access forbidden' });
+                        return [2 /*return*/];
+                    case 4: return [4 /*yield*/, recipe.remove()];
+                    case 5:
+                        _a.sent();
+                        res.status(204).send();
+                        return [2 /*return*/];
+                    case 6: return [3 /*break*/, 8];
+                    case 7:
+                        err_2 = _a.sent();
+                        if (err_2.kind && err_2.kind === 'ObjectId') {
+                            res.status(400).send({ error: 'url param: invalid value' });
+                            return [2 /*return*/];
+                        }
+                        else {
+                            res.status(500).send({ error: 'internal server error' });
+                            return [2 /*return*/];
+                        }
+                        return [3 /*break*/, 8];
+                    case 8: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RecipeController.prototype.deleteAll = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -136,14 +168,14 @@ var UserController = /** @class */ (function () {
                         user = req.user;
                         if (!!user) return [3 /*break*/, 1];
                         throw new Error('failed to load user');
-                    case 1: return [4 /*yield*/, user.populate('recipes').execPopulate()];
+                    case 1: return [4 /*yield*/, models_1.Recipe.deleteMany({ owner: user.id })];
                     case 2:
-                        data = _a.sent();
-                        res.status(200).send(data);
+                        _a.sent();
+                        res.status(204).send();
                         return [2 /*return*/];
                     case 3: return [3 /*break*/, 5];
                     case 4:
-                        err_2 = _a.sent();
+                        err_3 = _a.sent();
                         res.status(500).send({ error: 'internal server error' });
                         return [2 /*return*/];
                     case 5: return [2 /*return*/];
@@ -152,22 +184,29 @@ var UserController = /** @class */ (function () {
         });
     };
     __decorate([
-        decorators_1.patch('/users/update'),
+        decorators_1.post('/recipes/save'),
         decorators_1.auth(middlewares_1.authHandler),
-        decorators_1.use(validators_1.updateValidator, null),
+        decorators_1.use(validators_1.userRecipeValidator, null),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", Promise)
-    ], UserController.prototype, "updateCredentials", null);
+    ], RecipeController.prototype, "create", null);
     __decorate([
-        decorators_1.get('/users/synchronize'),
+        decorators_1.del('/recipes/:id'),
         decorators_1.auth(middlewares_1.authHandler),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", Promise)
-    ], UserController.prototype, "synchronize", null);
-    UserController = __decorate([
+    ], RecipeController.prototype, "deleteOne", null);
+    __decorate([
+        decorators_1.del('/recipes'),
+        decorators_1.auth(middlewares_1.authHandler),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object, Object]),
+        __metadata("design:returntype", Promise)
+    ], RecipeController.prototype, "deleteAll", null);
+    RecipeController = __decorate([
         decorators_1.controller()
-    ], UserController);
-    return UserController;
+    ], RecipeController);
+    return RecipeController;
 }());

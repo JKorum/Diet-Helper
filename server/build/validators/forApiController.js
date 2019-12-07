@@ -8,6 +8,6 @@ exports.lineValidator = express_validator_1.query('ingr')
     .notEmpty()
     .isString();
 exports.recipeValidator = express_validator_1.body(['title', 'ingr'])
-    .notEmpty()
     .isString()
-    .trim();
+    .trim()
+    .notEmpty();

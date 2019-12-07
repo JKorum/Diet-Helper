@@ -9,6 +9,6 @@ export const lineValidator = query('ingr')
   .isString()
 
 export const recipeValidator = body(['title', 'ingr'])
-  .notEmpty()
   .isString()
   .trim()
+  .notEmpty()
