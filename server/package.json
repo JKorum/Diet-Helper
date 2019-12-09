@@ -7,7 +7,9 @@
     "start": "node ./build/index.js",
     "dev:compiler": "tsc -w",
     "dev:server": "nodemon ./build/index.js",
-    "backend": "concurrently npm:dev:*"
+    "dev:client": "npm run start --prefix ../client",
+    "backend": "concurrently \"npm run dev:compiler\" \"npm run dev:server\"",
+    "project": "concurrently npm:dev:*"
   },
   "keywords": [],
   "author": "JKorum",
