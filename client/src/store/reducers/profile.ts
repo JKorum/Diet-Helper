@@ -33,6 +33,13 @@ export const profileReducer = (
         authenticated: false,
         error: action.payload
       }
+    case ActionsTypes.LOGOUT:
+      return {
+        ...state,
+        user: null,
+        loading: false,
+        authenticated: false
+      }
     default:
       return state
   }

@@ -15,15 +15,16 @@ export interface Recipe {
   totalTime: number
 }
 
-interface User {
+export interface User {
   id: any
   name: string
   email: string
   recipes: Recipe[]
 }
 
-interface Error {
+export interface Error {
   error: string
+  status: number | undefined
 }
 
 export interface ProfileState {
@@ -52,27 +53,39 @@ export enum ActionsTypes {
   RECIPES_LOADED = 'RECIPES_LOADED',
   RECIPES_ERROR = 'RECIPES_ERROR',
   SET_ALERT = 'SET_ALERT',
-  REMOVE_ALERT = 'REMOVE_ALERT'
+  REMOVE_ALERT = 'REMOVE_ALERT',
+  LOGOUT = 'LOGOUT',
+  USER_ACTED_TRUE = 'USER_ACTED_TRUE',
+  USER_ACTED_FALSE = 'USER_ACTED_FALSE'
 }
 
-interface LoadProfileAction {
+export interface UserActedActions {
+  type: ActionsTypes.USER_ACTED_TRUE | ActionsTypes.USER_ACTED_FALSE
+}
+
+export interface LoadProfileAction {
   type: ActionsTypes.LOAD_PROFILE
 }
 
-interface ProfileLoadedAction {
+export interface ProfileLoadedAction {
   type: ActionsTypes.PROFILE_LOADED
   payload: User
 }
 
-interface ProfileErrorAction {
+export interface ProfileErrorAction {
   type: ActionsTypes.PROFILE_ERROR
   payload: Error
+}
+
+export interface LogoutAction {
+  type: ActionsTypes.LOGOUT
 }
 
 export type ProfileActions =
   | LoadProfileAction
   | ProfileLoadedAction
   | ProfileErrorAction
+  | LogoutAction
 
 interface LoadRecipesAction {
   type: ActionsTypes.LOAD_RECIPES
@@ -92,6 +105,7 @@ export type RecipesActions =
   | LoadRecipesAction
   | RecipesLoadedAction
   | RecipesErrorAction
+  | LogoutAction
 
 interface SetAlertAction {
   type: ActionsTypes.SET_ALERT
@@ -108,4 +122,5 @@ export interface StoreState {
   profile: ProfileState
   recipes: RecipesState
   alert: AlertState | null
+  userActed: boolean
 }

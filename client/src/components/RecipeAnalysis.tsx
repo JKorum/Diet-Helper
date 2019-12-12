@@ -1,3 +1,9 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import Navigation from './Navigation'
 
-export const RecipeAnalysis = () => <h1>RecipeAnalysis (private)</h1>
+export const RecipeAnalysis = () => (
+  <Fragment>
+    <Navigation />
+    <h1>RecipeAnalysis (private)</h1>
+  </Fragment>
+)

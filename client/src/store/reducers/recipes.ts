@@ -29,6 +29,12 @@ export const recipesReducer = (
         loading: false,
         error: action.payload
       }
+    case ActionsTypes.LOGOUT:
+      return {
+        ...state,
+        fetched: null,
+        loading: false
+      }
     default:
       return state
   }
