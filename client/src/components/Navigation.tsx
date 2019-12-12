@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutUser } from '../store/actions'
+import { logoutUser, unregisterUser } from '../store/actions'
 
 /*
-  login functionality
   handler for delete account
   analysis component  
   Change credentials component
@@ -18,6 +17,11 @@ interface NavConnectedProps {
 const Navigation: FunctionComponent<NavConnectedProps> = ({ dispatch }) => {
   const handleLogout = () => {
     dispatch(logoutUser())
+  }
+
+  const handleUnregister = () => {
+    console.log('modal!')
+    dispatch(unregisterUser())
   }
 
   return (
@@ -79,7 +83,9 @@ const Navigation: FunctionComponent<NavConnectedProps> = ({ dispatch }) => {
                   Credentials
                 </NavLink>
                 <div className='dropdown-divider'></div>
-                <span className='dropdown-item'>Delete</span>
+                <span className='dropdown-item' onClick={handleUnregister}>
+                  Delete
+                </span>
               </div>
             </li>
           </ul>

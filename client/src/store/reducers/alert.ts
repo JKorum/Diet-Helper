@@ -8,6 +8,7 @@ export const alertReducer = (
     case ActionsTypes.SET_ALERT:
       return action.payload
     case ActionsTypes.REMOVE_ALERT:
+    case ActionsTypes.ACCOUNT_DELETED:
       return null
     default:
       return state

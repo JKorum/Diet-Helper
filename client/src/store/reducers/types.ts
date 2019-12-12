@@ -56,11 +56,16 @@ export enum ActionsTypes {
   REMOVE_ALERT = 'REMOVE_ALERT',
   LOGOUT = 'LOGOUT',
   USER_ACTED_TRUE = 'USER_ACTED_TRUE',
-  USER_ACTED_FALSE = 'USER_ACTED_FALSE'
+  USER_ACTED_FALSE = 'USER_ACTED_FALSE',
+  ACCOUNT_DELETED = 'ACCOUNT_DELETED',
+  REMOVE_PROFILE_ERROR = 'REMOVE_PROFILE_ERROR'
 }
 
 export interface UserActedActions {
-  type: ActionsTypes.USER_ACTED_TRUE | ActionsTypes.USER_ACTED_FALSE
+  type:
+    | ActionsTypes.USER_ACTED_TRUE
+    | ActionsTypes.USER_ACTED_FALSE
+    | ActionsTypes.ACCOUNT_DELETED
 }
 
 export interface LoadProfileAction {
@@ -77,6 +82,10 @@ export interface ProfileErrorAction {
   payload: Error
 }
 
+export interface RemoveProfileError {
+  type: ActionsTypes.REMOVE_PROFILE_ERROR
+}
+
 export interface LogoutAction {
   type: ActionsTypes.LOGOUT
 }
@@ -86,6 +95,8 @@ export type ProfileActions =
   | ProfileLoadedAction
   | ProfileErrorAction
   | LogoutAction
+  | AccountDeletedAction
+  | RemoveProfileError
 
 interface LoadRecipesAction {
   type: ActionsTypes.LOAD_RECIPES
@@ -106,6 +117,7 @@ export type RecipesActions =
   | RecipesLoadedAction
   | RecipesErrorAction
   | LogoutAction
+  | AccountDeletedAction
 
 interface SetAlertAction {
   type: ActionsTypes.SET_ALERT
@@ -116,7 +128,14 @@ interface RemoveAlertAction {
   type: ActionsTypes.REMOVE_ALERT
 }
 
-export type AlertActions = SetAlertAction | RemoveAlertAction
+export interface AccountDeletedAction {
+  type: ActionsTypes.ACCOUNT_DELETED
+}
+
+export type AlertActions =
+  | SetAlertAction
+  | RemoveAlertAction
+  | AccountDeletedAction
 
 export interface StoreState {
   profile: ProfileState

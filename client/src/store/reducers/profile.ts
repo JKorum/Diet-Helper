@@ -40,6 +40,18 @@ export const profileReducer = (
         loading: false,
         authenticated: false
       }
+    case ActionsTypes.ACCOUNT_DELETED:
+      return {
+        user: null,
+        loading: false,
+        authenticated: false,
+        error: null
+      }
+    case ActionsTypes.REMOVE_PROFILE_ERROR:
+      return {
+        ...state,
+        error: null
+      }
     default:
       return state
   }

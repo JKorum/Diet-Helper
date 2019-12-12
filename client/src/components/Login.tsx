@@ -71,7 +71,7 @@ const Login: FunctionComponent<LoginConnectedProps> = ({
     }
   }
 
-  if (authenticated) {
+  if (authenticated && !loading) {
     return <Redirect to='/search' />
   } else {
     return (

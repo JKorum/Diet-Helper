@@ -6,7 +6,8 @@ import {
   ActionsTypes,
   ProfileErrorAction,
   ProfileLoadedAction,
-  LoadProfileAction
+  LoadProfileAction,
+  UserActedActions
 } from '../reducers/types'
 
 export const synchronizer = (): ThunkAction<
@@ -17,6 +18,9 @@ export const synchronizer = (): ThunkAction<
 > => {
   return async dispatch => {
     try {
+      dispatch<UserActedActions>({
+        type: ActionsTypes.USER_ACTED_FALSE
+      })
       dispatch<LoadProfileAction>({
         type: ActionsTypes.LOAD_PROFILE
       })

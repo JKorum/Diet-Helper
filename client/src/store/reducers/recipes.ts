@@ -35,6 +35,12 @@ export const recipesReducer = (
         fetched: null,
         loading: false
       }
+    case ActionsTypes.ACCOUNT_DELETED:
+      return {
+        fetched: null,
+        loading: false,
+        error: null
+      }
     default:
       return state
   }

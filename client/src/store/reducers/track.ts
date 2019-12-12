@@ -8,6 +8,7 @@ export const trackReducer = (
     case ActionsTypes.USER_ACTED_TRUE:
       return true
     case ActionsTypes.USER_ACTED_FALSE:
+    case ActionsTypes.ACCOUNT_DELETED:
       return false
     default:
       return state
