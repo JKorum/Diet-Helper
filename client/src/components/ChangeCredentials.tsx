@@ -13,6 +13,7 @@ import { StoreState, User } from '../store/reducers'
 import { updateSanitizer } from '../utils/sanitizers'
 import { ActionsTypes, Error } from '../store/reducers'
 import { updateUser } from '../store/actions'
+import UnregisterModal from './UnregisterModal'
 
 interface ChangeCredConnectedProps {
   loading: boolean
@@ -84,6 +85,7 @@ const ChangeCredentials: FunctionComponent<ChangeCredConnectedProps> = ({
 
   return (
     <Fragment>
+      <UnregisterModal />
       <Navigation />
       <div className='container'>
         <div className='row justify-content-center'>

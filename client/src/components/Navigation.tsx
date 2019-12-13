@@ -1,12 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutUser, unregisterUser } from '../store/actions'
-
-/*  
-  analysis component    
-  alert system (private components)
-*/
+import { logoutUser } from '../store/actions'
 
 interface NavConnectedProps {
   dispatch: Function
@@ -15,11 +10,6 @@ interface NavConnectedProps {
 const Navigation: FunctionComponent<NavConnectedProps> = ({ dispatch }) => {
   const handleLogout = () => {
     dispatch(logoutUser())
-  }
-
-  const handleUnregister = () => {
-    console.log('modal!')
-    dispatch(unregisterUser())
   }
 
   return (
@@ -81,7 +71,11 @@ const Navigation: FunctionComponent<NavConnectedProps> = ({ dispatch }) => {
                   Credentials
                 </NavLink>
                 <div className='dropdown-divider'></div>
-                <span className='dropdown-item' onClick={handleUnregister}>
+                <span
+                  className='dropdown-item'
+                  data-toggle='modal'
+                  data-target='#unregisterModal'
+                >
                   Delete
                 </span>
               </div>
