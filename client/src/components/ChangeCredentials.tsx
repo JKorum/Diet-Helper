@@ -44,6 +44,8 @@ const ChangeCredentials: FunctionComponent<ChangeCredConnectedProps> = ({
     password: ''
   })
 
+  const [disabled, setDisabled] = useState(true)
+
   const { name, email, password } = userData
 
   useEffect(() => {
@@ -63,6 +65,18 @@ const ChangeCredentials: FunctionComponent<ChangeCredConnectedProps> = ({
       }
     }
   }, [userActed, loading, error])
+
+  useEffect(() => {
+    if (name === '' && email === '' && password === '') {
+      setDisabled(true)
+      const $email = document.getElementById('email')
+      if ($email) {
+        $email.classList.remove('is-invalid')
+      }
+    } else {
+      setDisabled(false)
+    }
+  }, [userData])
 
   const handleChange = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
@@ -138,7 +152,12 @@ const ChangeCredentials: FunctionComponent<ChangeCredConnectedProps> = ({
                 </small>
               </div>
 
-              <button type='submit' className='btn btn-outline-primary'>
+              <button
+                id='submit'
+                type='submit'
+                className='btn btn-outline-primary'
+                disabled={disabled}
+              >
                 <span
                   className='spinner-border spinner-border-sm'
                   role='status'
