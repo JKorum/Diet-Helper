@@ -43,11 +43,11 @@ class UserController {
           res.status(200).send({ id, name, email })
           return
         }
-        if (newName) {
-          await user.update({ name: newName })
-        }
         if (newEmail) {
           await user.update({ email: newEmail })
+        }
+        if (newName) {
+          await user.update({ name: newName })
         }
         if (newPassword) {
           user.password = newPassword
@@ -64,8 +64,13 @@ class UserController {
         }
       }
     } catch (err) {
-      res.status(500).send({ error: 'internal server error' })
-      return
+      if (err.code && err.code === 11000) {
+        res.status(409).send({ error: `email already in used` })
+        return
+      } else {
+        res.status(500).send({ error: 'internal server error' })
+        return
+      }
     }
   }
 

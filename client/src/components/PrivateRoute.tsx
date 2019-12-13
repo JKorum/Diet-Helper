@@ -10,29 +10,32 @@ interface PrivateRouteProps extends ConnectedProps {
 
 interface ConnectedProps {
   authenticated?: boolean
-  loading?: boolean
 }
 
 const PrivateRoute: FunctionComponent<PrivateRouteProps> = ({
   authenticated,
-  loading,
+
   path,
   component,
   ...rest
-}) =>
-  authenticated && !loading ? (
-    <Route {...rest} path={path} component={component} />
-  ) : (
-    <Redirect to='/login' />
-  )
+}) => {
+  if (authenticated !== undefined) {
+    return authenticated ? (
+      <Route {...rest} path={path} component={component} />
+    ) : (
+      <Redirect to='/login' />
+    )
+  } else {
+    return <Redirect to='/login' />
+  }
+}
 
 const mapStateToProps: MapStateToProps<
   ConnectedProps,
   PrivateRouteProps,
   StoreState
-> = ({ profile: { authenticated, loading } }) => ({
-  authenticated,
-  loading
+> = ({ profile: { authenticated } }) => ({
+  authenticated
 })
 
 export default connect(mapStateToProps)(PrivateRoute)

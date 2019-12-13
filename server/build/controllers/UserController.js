@@ -86,14 +86,14 @@ var UserController = /** @class */ (function () {
                         res.status(200).send({ id: id, name: name_1, email: email });
                         return [2 /*return*/];
                     case 4:
-                        if (!newName) return [3 /*break*/, 6];
-                        return [4 /*yield*/, user.update({ name: newName })];
+                        if (!newEmail) return [3 /*break*/, 6];
+                        return [4 /*yield*/, user.update({ email: newEmail })];
                     case 5:
                         _b.sent();
                         _b.label = 6;
                     case 6:
-                        if (!newEmail) return [3 /*break*/, 8];
-                        return [4 /*yield*/, user.update({ email: newEmail })];
+                        if (!newName) return [3 /*break*/, 8];
+                        return [4 /*yield*/, user.update({ name: newName })];
                     case 7:
                         _b.sent();
                         _b.label = 8;
@@ -119,8 +119,15 @@ var UserController = /** @class */ (function () {
                     case 12: return [3 /*break*/, 14];
                     case 13:
                         err_1 = _b.sent();
-                        res.status(500).send({ error: 'internal server error' });
-                        return [2 /*return*/];
+                        if (err_1.code && err_1.code === 11000) {
+                            res.status(409).send({ error: "email already in used" });
+                            return [2 /*return*/];
+                        }
+                        else {
+                            res.status(500).send({ error: 'internal server error' });
+                            return [2 /*return*/];
+                        }
+                        return [3 /*break*/, 14];
                     case 14: return [2 /*return*/];
                 }
             });

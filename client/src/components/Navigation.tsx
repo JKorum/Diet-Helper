@@ -3,10 +3,8 @@ import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser, unregisterUser } from '../store/actions'
 
-/*
-  handler for delete account
-  analysis component  
-  Change credentials component
+/*  
+  analysis component    
   alert system (private components)
 */
 

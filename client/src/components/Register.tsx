@@ -2,7 +2,8 @@ import React, {
   FunctionComponent,
   SyntheticEvent,
   FormEvent,
-  useState
+  useState,
+  useEffect
 } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect, MapStateToProps } from 'react-redux'
@@ -24,6 +25,7 @@ interface RegisterProps {
   authenticated: boolean
   error: Error | null
   dispatch?: Function
+  userActed: boolean
 }
 
 const Register: FunctionComponent<RegisterProps> = ({
@@ -31,7 +33,8 @@ const Register: FunctionComponent<RegisterProps> = ({
   loading,
   authenticated,
   error,
-  dispatch
+  dispatch,
+  userActed
 }) => {
   const [userData, setUserdata] = useState({
     name: '',
@@ -41,6 +44,15 @@ const Register: FunctionComponent<RegisterProps> = ({
   })
 
   const { name, email, password, confirm } = userData
+
+  useEffect(() => {
+    const $email = document.getElementById('email')
+    if ($email) {
+      if (userActed && !loading && error && error.status === 409) {
+        $email.classList.add('is-invalid')
+      }
+    }
+  }, [loading, error, userActed])
 
   const handleChange = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
@@ -54,15 +66,17 @@ const Register: FunctionComponent<RegisterProps> = ({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
-    // const target = e.target as HTMLFormElement
-
     const $name = document.getElementById('name')
     const $email = document.getElementById('email')
     const $password = document.getElementById('password')
     const $confirm = document.getElementById('confirm')
 
     $name && $name.classList.add('is-valid')
-    $email && $email.classList.add('is-valid')
+
+    if ($email) {
+      $email.classList.remove('is-invalid')
+      $email.classList.add('is-valid')
+    }
 
     if (password !== confirm) {
       if ($password && $confirm) {
@@ -131,6 +145,9 @@ const Register: FunctionComponent<RegisterProps> = ({
                       required
                     />
                     <div className='valid-feedback'>Excellent!</div>
+                    <div className='invalid-feedback'>
+                      Sorry, it looks like another user owns this email address.
+                    </div>
                   </div>
                   <div className='form-group'>
                     <label htmlFor='password'>Password</label>
@@ -194,12 +211,14 @@ const Register: FunctionComponent<RegisterProps> = ({
 }
 
 const mapStateToProps: MapStateToProps<RegisterProps, OwnProps, StoreState> = ({
-  profile
+  profile: { user, loading, authenticated, error },
+  userActed
 }) => ({
-  user: profile.user,
-  loading: profile.loading,
-  authenticated: profile.authenticated,
-  error: profile.error
+  user,
+  loading,
+  authenticated,
+  error,
+  userActed
 })
 
 export default connect(mapStateToProps)(Register)

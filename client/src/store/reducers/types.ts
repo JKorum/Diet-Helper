@@ -45,6 +45,20 @@ export interface AlertState {
   color: string
 }
 
+export interface UpdateProfileAction {
+  type: ActionsTypes.UPDATE_PROFILE
+}
+
+export interface ProfileUpdatedAction {
+  type: ActionsTypes.PROFILE_UPDATED
+  payload: { name: string; email: string }
+}
+
+export interface ProfileUpdateError {
+  type: ActionsTypes.PROFILE_UPDATE_ERROR
+  payload: Error
+}
+
 export enum ActionsTypes {
   LOAD_PROFILE = 'LOAD_PROFILE',
   PROFILE_LOADED = 'PROFILE_LOADED',
@@ -58,7 +72,10 @@ export enum ActionsTypes {
   USER_ACTED_TRUE = 'USER_ACTED_TRUE',
   USER_ACTED_FALSE = 'USER_ACTED_FALSE',
   ACCOUNT_DELETED = 'ACCOUNT_DELETED',
-  REMOVE_PROFILE_ERROR = 'REMOVE_PROFILE_ERROR'
+  REMOVE_PROFILE_ERROR = 'REMOVE_PROFILE_ERROR',
+  UPDATE_PROFILE = 'UPDATE_PROFILE',
+  PROFILE_UPDATED = 'PROFILE_UPDATED',
+  PROFILE_UPDATE_ERROR = 'PROFILE_UPDATE_ERROR'
 }
 
 export interface UserActedActions {
@@ -97,6 +114,9 @@ export type ProfileActions =
   | LogoutAction
   | AccountDeletedAction
   | RemoveProfileError
+  | ProfileUpdatedAction
+  | UpdateProfileAction
+  | ProfileUpdateError
 
 interface LoadRecipesAction {
   type: ActionsTypes.LOAD_RECIPES

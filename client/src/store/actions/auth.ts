@@ -37,6 +37,9 @@ export const registerUser = (
       dispatch<RemoveProfileError>({
         type: ActionsTypes.REMOVE_PROFILE_ERROR
       })
+      dispatch<UserActedActions>({
+        type: ActionsTypes.USER_ACTED_TRUE
+      })
       const primus = await axios(config)
       if (primus.status === 201) {
         dispatch<LoadProfileAction>({
@@ -56,7 +59,8 @@ export const registerUser = (
         if (
           response.status === 422 ||
           response.status === 500 ||
-          response.status === 401
+          response.status === 401 ||
+          response.status === 409
         ) {
           dispatch<ProfileErrorAction>({
             type: ActionsTypes.PROFILE_ERROR,

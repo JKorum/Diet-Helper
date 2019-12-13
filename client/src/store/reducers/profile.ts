@@ -52,6 +52,31 @@ export const profileReducer = (
         ...state,
         error: null
       }
+    case ActionsTypes.UPDATE_PROFILE:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      }
+    case ActionsTypes.PROFILE_UPDATED:
+      if (state.user) {
+        return {
+          ...state,
+          user: { ...state.user, ...action.payload },
+          loading: false
+        }
+      } else {
+        return {
+          ...state,
+          loading: false
+        }
+      }
+    case ActionsTypes.PROFILE_UPDATE_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      }
     default:
       return state
   }

@@ -87,7 +87,7 @@ var AuthController = /** @class */ (function () {
                     case 5:
                         err_1 = _a.sent();
                         if (err_1.code && err_1.code === 11000) {
-                            res.status(422).send({ error: "email already in used" });
+                            res.status(409).send({ error: "email already in used" });
                             return [2 /*return*/];
                         }
                         res.status(500).send({ error: 'internal server error' });

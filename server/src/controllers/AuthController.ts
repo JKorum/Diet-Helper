@@ -49,7 +49,7 @@ class AuthController {
       }
     } catch (err) {
       if (err.code && err.code === 11000) {
-        res.status(422).send({ error: `email already in used` })
+        res.status(409).send({ error: `email already in used` })
         return
       }
       res.status(500).send({ error: 'internal server error' })
