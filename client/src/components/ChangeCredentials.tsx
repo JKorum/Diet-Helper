@@ -14,6 +14,7 @@ import { updateSanitizer } from '../utils/sanitizers'
 import { ActionsTypes, Error } from '../store/reducers'
 import { updateUser } from '../store/actions'
 import UnregisterModal from './UnregisterModal'
+import Alert from './Alert'
 
 interface ChangeCredConnectedProps {
   loading: boolean
@@ -174,6 +175,7 @@ const ChangeCredentials: FunctionComponent<ChangeCredConnectedProps> = ({
           </div>
         </div>
       </div>
+      <Alert />
     </Fragment>
   )
 }

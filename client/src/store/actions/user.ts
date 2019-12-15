@@ -10,7 +10,8 @@ import {
   UserActedActions,
   UpdateProfileAction,
   ProfileUpdatedAction,
-  ProfileUpdateError
+  ProfileUpdateError,
+  AlertActions
 } from '../reducers/types'
 import { Sanitized } from '../../utils/sanitizers'
 
@@ -91,6 +92,13 @@ export const updateUser = (
           type: ActionsTypes.PROFILE_UPDATED,
           payload: { name, email }
         })
+        dispatch<AlertActions>({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text: 'Your profile is updated.',
+            color: 'success'
+          }
+        })
         return
       }
     } catch (err) {
@@ -107,11 +115,30 @@ export const updateUser = (
             type: ActionsTypes.PROFILE_UPDATE_ERROR,
             payload: { ...response.data, status: response.status }
           })
+          if (response.status === 500) {
+            dispatch<AlertActions>({
+              type: ActionsTypes.SET_ALERT,
+              payload: {
+                text:
+                  'It looks like there is a problem with the server. Please, try again later.',
+                color: 'danger'
+              }
+            })
+            return
+          }
           return
         } else {
           dispatch<ProfileUpdateError>({
             type: ActionsTypes.PROFILE_UPDATE_ERROR,
             payload: { error: 'Something went wrong', status: response.status }
+          })
+          dispatch<AlertActions>({
+            type: ActionsTypes.SET_ALERT,
+            payload: {
+              text:
+                'It looks like there is a problem with the server. Please, try again later.',
+              color: 'danger'
+            }
           })
           return
         }
@@ -121,6 +148,13 @@ export const updateUser = (
         dispatch<ProfileUpdateError>({
           type: ActionsTypes.PROFILE_UPDATE_ERROR,
           payload: { error: 'Something went wrong', status: undefined }
+        })
+        dispatch<AlertActions>({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text: 'Something went wrong. Please, try again later.',
+            color: 'danger'
+          }
         })
         return
       }

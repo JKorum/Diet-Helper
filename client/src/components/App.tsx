@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import PrivateRoute from './PrivateRoute'
 import { SearchRecipes } from './SearchRecipes'
-import { RecipeAnalysis } from './RecipeAnalysis'
+import RecipeAnalysis from './RecipeAnalysis'
 import { Collection } from './Collection'
 import ChangeCredentials from './ChangeCredentials'
 import Landing from './Landing'

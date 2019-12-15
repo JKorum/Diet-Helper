@@ -7,6 +7,9 @@ import React, {
   useEffect
 } from 'react'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { AlertActions, ActionsTypes } from '../store/reducers'
 import { Error } from '../store/reducers'
 import {
   ParsedAnalysisResult,
@@ -15,11 +18,18 @@ import {
 import Navigation from './Navigation'
 import UnregisterModal from './UnregisterModal'
 import { AnalysisModal } from './AnalysisModal'
+import Alert from './Alert'
+
+interface RecAnalysisConnectedProps {
+  dispatch: Dispatch<AlertActions>
+}
 
 const placeholder =
   '300g fried chicken,\n200g boiled rice,\n3 tomatoes,\n4 cucumbers,\n1 tablespoon olive oil'
 
-export const RecipeAnalysis: FunctionComponent = () => {
+const RecipeAnalysis: FunctionComponent<RecAnalysisConnectedProps> = ({
+  dispatch
+}) => {
   const [data, setData] = useState({
     title: '',
     ingr: ''
@@ -28,7 +38,6 @@ export const RecipeAnalysis: FunctionComponent = () => {
   const [loading, setLoading] = useState(false)
   const [submitDisabled, setSubmitDisabled] = useState(true)
   const [resultDisabled, setResultDisabled] = useState(true)
-  // error -> alert
   const [error, setError] = useState<Error | null>(null)
   const [result, setResult] = useState<ParsedAnalysisResult | null>(null)
 
@@ -47,8 +56,40 @@ export const RecipeAnalysis: FunctionComponent = () => {
       setResultDisabled(true)
     } else {
       setResultDisabled(false)
+      dispatch({
+        type: ActionsTypes.SET_ALERT,
+        payload: {
+          text: "You can now hit the 'Result' button to view nutrition data.",
+          color: 'success'
+        }
+      })
     }
   }, [result])
+
+  useEffect(() => {
+    if (error) {
+      const { status } = error
+      if (status === 422 || status === 555 || status === 404) {
+        dispatch({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text:
+              'Please, check the recipe text for accidental typos or missing commas between the ingredients and try again.',
+            color: 'danger'
+          }
+        })
+      } else {
+        dispatch({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text:
+              'It looks like there is a problem with the server. Please, try again later.',
+            color: 'danger'
+          }
+        })
+      }
+    }
+  }, [error])
 
   const handleChange = (e: SyntheticEvent) => {
     const target = e.target as HTMLInputElement
@@ -136,7 +177,7 @@ export const RecipeAnalysis: FunctionComponent = () => {
                   id='text'
                   name='ingr'
                   className='form-control'
-                  rows={10}
+                  rows={8}
                   placeholder={placeholder}
                   value={ingr}
                   onChange={handleChange}
@@ -174,6 +215,9 @@ export const RecipeAnalysis: FunctionComponent = () => {
           </div>
         </div>
       </div>
+      <Alert />
     </Fragment>
   )
 }
+
+export default connect()(RecipeAnalysis)

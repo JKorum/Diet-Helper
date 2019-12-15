@@ -121,7 +121,6 @@ const UnregisterModal: FunctionComponent<UnregModalConnectedProps> = ({
 
           <div className='modal-footer'>
             <button
-              id='submit'
               form='account-deletion'
               type='submit'
               className='btn btn-outline-primary'
