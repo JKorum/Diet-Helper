@@ -2,8 +2,8 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { validationResult } from 'express-validator'
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { get, post, use, controller } from './decorators'
-import { transformQuery, transformBody } from '../middlewares'
+import { get, post, use, controller, auth } from './decorators'
+import { transformQuery, transformBody, authHandler } from '../middlewares'
 import { recipesValidator, lineValidator, recipeValidator } from '../validators'
 
 const idR = process.env.APP_ID_RECIPES
@@ -124,6 +124,7 @@ class ApiController {
   }
 
   @post('/recipes/analysis/recipe')
+  @auth(authHandler)
   @use(recipeValidator, transformBody)
   async recipeAnalysis(req: Request, res: Response): Promise<void> {
     const errors = validationResult(req)

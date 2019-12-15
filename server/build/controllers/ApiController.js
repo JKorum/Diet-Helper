@@ -254,6 +254,7 @@ var ApiController = /** @class */ (function () {
     ], ApiController.prototype, "lineAnalysis", null);
     __decorate([
         decorators_1.post('/recipes/analysis/recipe'),
+        decorators_1.auth(middlewares_1.authHandler),
         decorators_1.use(validators_1.recipeValidator, middlewares_1.transformBody),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
