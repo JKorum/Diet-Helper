@@ -2,6 +2,7 @@ import { RecipesState, RecipesActions, ActionsTypes } from './types'
 
 const initialState: RecipesState = {
   fetched: null,
+  more: undefined,
   loading: false,
   error: null
 }
@@ -13,31 +14,39 @@ export const recipesReducer = (
   switch (action.type) {
     case ActionsTypes.LOAD_RECIPES:
       return {
-        fetched: null,
+        ...state,
         loading: true,
         error: null
       }
-    case ActionsTypes.RECIPES_LOADED:
+    case ActionsTypes.RECIPES_LOADED_NEW:
       return {
-        fetched: action.payload,
+        fetched: action.payload.recipes,
+        more: action.payload.more,
         loading: false,
         error: null
       }
+    case ActionsTypes.RECIPES_LOADED_SUC:
+      if (state.fetched) {
+        return {
+          fetched: [...state.fetched, ...action.payload.recipes],
+          more: action.payload.more,
+          loading: false,
+          error: null
+        }
+      } else {
+        return state
+      }
     case ActionsTypes.RECIPES_ERROR:
       return {
-        fetched: null,
+        ...state,
         loading: false,
         error: action.payload
       }
     case ActionsTypes.LOGOUT:
-      return {
-        ...state,
-        fetched: null,
-        loading: false
-      }
     case ActionsTypes.ACCOUNT_DELETED:
       return {
         fetched: null,
+        more: undefined,
         loading: false,
         error: null
       }
