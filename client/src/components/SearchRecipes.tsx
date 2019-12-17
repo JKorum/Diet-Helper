@@ -14,6 +14,8 @@ import UnregisterModal from './UnregisterModal'
 import { buildRecipesQuery } from '../utils/buildRecipesQuery'
 import { StoreState, Error, Recipe, ActionsTypes } from '../store/reducers'
 import Alert from './Alert'
+import { RecipesList } from './RecipesList'
+import { Spinner } from './Spinner'
 
 export type Search = string
 
@@ -87,6 +89,7 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
       dispatch({
         type: ActionsTypes.USER_ACTED_FALSE
       })
+      // place to synthetic request?
       return () => {
         dispatch({
           type: ActionsTypes.RECIPES_CLEANUP
@@ -154,6 +157,7 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
         } else {
           /* user sent different req */
           from.current = 0
+          queryString.current = query
           dispatch(fetchRecipes(query, false, from.current))
         }
       }
@@ -453,6 +457,8 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
           </div>
         </div>
       </div>
+      <RecipesList ids={recipesIds} />
+      {loading ? <Spinner /> : null}
       <Alert />
     </Fragment>
   )
