@@ -1,7 +1,7 @@
 export interface Recipe {
   owner?: any
   _id?: any
-  clientSideId?: any
+  clientSideId?: string
   label: string
   image: string
   source: string
@@ -69,6 +69,7 @@ export enum ActionsTypes {
   RECIPES_LOADED_NEW = 'RECIPES_LOADED_NEW',
   RECIPES_LOADED_SUC = 'RECIPES_LOADED_SUC',
   RECIPES_ERROR = 'RECIPES_ERROR',
+  RECIPES_CLEANUP = 'RECIPES_CLEANUP',
   SET_ALERT = 'SET_ALERT',
   REMOVE_ALERT = 'REMOVE_ALERT',
   LOGOUT = 'LOGOUT',
@@ -125,6 +126,10 @@ interface LoadRecipesAction {
   type: ActionsTypes.LOAD_RECIPES
 }
 
+interface RecipesCleanupAction {
+  type: ActionsTypes.RECIPES_CLEANUP
+}
+
 interface RecipesLoadedAction {
   type: ActionsTypes.RECIPES_LOADED_NEW | ActionsTypes.RECIPES_LOADED_SUC
   payload: {
@@ -144,6 +149,7 @@ export type RecipesActions =
   | RecipesErrorAction
   | LogoutAction
   | AccountDeletedAction
+  | RecipesCleanupAction
 
 interface SetAlertAction {
   type: ActionsTypes.SET_ALERT

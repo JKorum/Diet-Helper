@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import PrivateRoute from './PrivateRoute'
-import { SearchRecipes } from './SearchRecipes'
+import SearchRecipes from './SearchRecipes'
 import RecipeAnalysis from './RecipeAnalysis'
 import { Collection } from './Collection'
 import ChangeCredentials from './ChangeCredentials'

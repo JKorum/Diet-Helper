@@ -240,6 +240,7 @@ var ApiController = /** @class */ (function () {
     };
     __decorate([
         decorators_1.get('/recipes'),
+        decorators_1.auth(middlewares_1.authHandler),
         decorators_1.use(validators_1.recipesValidator, middlewares_1.transformQuery),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),

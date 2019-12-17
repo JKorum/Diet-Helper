@@ -44,6 +44,7 @@ export const recipesReducer = (
       }
     case ActionsTypes.LOGOUT:
     case ActionsTypes.ACCOUNT_DELETED:
+    case ActionsTypes.RECIPES_CLEANUP:
       return {
         fetched: null,
         more: undefined,

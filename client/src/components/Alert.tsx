@@ -13,13 +13,13 @@ interface AlertConnectedProps {
 const Alert: FunctionComponent<AlertConnectedProps> = ({ alert, dispatch }) => {
   useEffect(() => {
     return () => {
-      if (dispatch) {
+      if (dispatch && alert) {
         dispatch({
           type: ActionsTypes.REMOVE_ALERT
         })
       }
     }
-  }, [])
+  }, [alert])
 
   const handleClick = () => {
     if (dispatch) {
@@ -34,8 +34,10 @@ const Alert: FunctionComponent<AlertConnectedProps> = ({ alert, dispatch }) => {
     let status: string
     if (color === 'success') {
       status = 'Done!'
-    } else {
+    } else if (color === 'danger') {
       status = 'Error.'
+    } else {
+      status = 'Sorry.'
     }
 
     return (

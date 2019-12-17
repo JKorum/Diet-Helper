@@ -1,13 +1,19 @@
 import React, {
   Fragment,
   useState,
+  useEffect,
   SyntheticEvent,
   FunctionComponent,
-  FormEvent
+  FormEvent,
+  useRef
 } from 'react'
+import { connect, MapStateToProps } from 'react-redux'
+import { fetchRecipes } from '../store/actions'
 import Navigation from './Navigation'
 import UnregisterModal from './UnregisterModal'
 import { buildRecipesQuery } from '../utils/buildRecipesQuery'
+import { StoreState, Error, Recipe, ActionsTypes } from '../store/reducers'
+import Alert from './Alert'
 
 export type Search = string
 
@@ -27,7 +33,24 @@ export interface HealthBoxes {
   'peanut-free': boolean
 }
 
-export const SearchRecipes: FunctionComponent = () => {
+interface SearchRecipesOwnProps {}
+interface SearchRecipesConnectedProps {
+  recipesIds: string[] | null
+  userActed: boolean
+  loading: boolean
+  more: boolean | undefined
+  error: Error | null
+  dispatch?: Function
+}
+
+const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
+  recipesIds,
+  userActed,
+  loading,
+  more,
+  error,
+  dispatch
+}) => {
   /* state for collapsing elements */
   const [btnOptState, toggleBtnOptState] = useState(false)
   const [dietFilState, toggleDietFilState] = useState(false)
@@ -51,6 +74,35 @@ export const SearchRecipes: FunctionComponent = () => {
     'peanut-free': false
   })
 
+  /* persistent state for pagination */
+  const queryString = useRef('')
+  const from = useRef(0)
+
+  /* state for req submit button */
+  const [disabled, setDisabled] = useState(true)
+
+  /* effects */
+  useEffect(() => {
+    if (dispatch) {
+      dispatch({
+        type: ActionsTypes.USER_ACTED_FALSE
+      })
+      return () => {
+        dispatch({
+          type: ActionsTypes.RECIPES_CLEANUP
+        })
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (search) {
+      setDisabled(false)
+    } else {
+      setDisabled(true)
+    }
+  }, [search])
+
   /* local state handlers */
   const handleBtnOptClick = (e: SyntheticEvent) => {
     toggleBtnOptState(!btnOptState)
@@ -72,15 +124,40 @@ export const SearchRecipes: FunctionComponent = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
-    /* build query string */
-    console.log(buildRecipesQuery(search, diet, calories, health))
-
-    // action creator !
-    // disable button if no value in search
-    // state for pagination (compare query strings -> same -> successive = true)
-    // query store for 'more' value before request -> true -> req / false -> alert 'no results for same req'
-
-    // component for recipe
+    if (!userActed) {
+      /* first user req -> set ref to query */
+      const query = buildRecipesQuery(search, diet, calories, health)
+      if (typeof query === 'string' && dispatch) {
+        queryString.current = query
+        dispatch(fetchRecipes(query, false, from.current))
+      }
+    } else {
+      /* subsequent user req */
+      const query = buildRecipesQuery(search, diet, calories, health)
+      if (typeof query === 'string' && dispatch) {
+        if (queryString.current === query) {
+          /* user sent the same req */
+          if (more) {
+            /* there are more recipes available on API */
+            from.current = from.current + 10
+            dispatch(fetchRecipes(query, true, from.current))
+          } else {
+            /* there are no recipes */
+            dispatch({
+              type: ActionsTypes.SET_ALERT,
+              payload: {
+                text: 'There are no more recipes matching the request.',
+                color: 'light'
+              }
+            })
+          }
+        } else {
+          /* user sent different req */
+          from.current = 0
+          dispatch(fetchRecipes(query, false, from.current))
+        }
+      }
+    }
   }
 
   /* input handlers */
@@ -131,7 +208,11 @@ export const SearchRecipes: FunctionComponent = () => {
                   value={search}
                 />
                 <div className='input-group-append'>
-                  <button className='btn btn-outline-primary' type='submit'>
+                  <button
+                    className='btn btn-outline-primary'
+                    type='submit'
+                    disabled={disabled}
+                  >
                     <i className='fas fa-search'></i>
                   </button>
                 </div>
@@ -372,6 +453,37 @@ export const SearchRecipes: FunctionComponent = () => {
           </div>
         </div>
       </div>
+      <Alert />
     </Fragment>
   )
 }
+
+function makeListOfRecipesId(data: Recipe[] | null): string[] | null {
+  if (Array.isArray(data)) {
+    let listOfIds: string[] = []
+    if (data.length > 0) {
+      for (let rec of data) {
+        if (rec.clientSideId) {
+          listOfIds.push(rec.clientSideId)
+        }
+      }
+    }
+    return listOfIds
+  } else {
+    return null
+  }
+}
+
+const mapStateToProps: MapStateToProps<
+  SearchRecipesConnectedProps,
+  SearchRecipesOwnProps,
+  StoreState
+> = ({ recipes: { fetched, more, loading, error }, userActed }) => ({
+  recipesIds: makeListOfRecipesId(fetched),
+  userActed,
+  more,
+  loading,
+  error
+})
+
+export default connect(mapStateToProps)(SearchRecipes)

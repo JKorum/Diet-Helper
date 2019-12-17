@@ -33,6 +33,7 @@ export interface ApiRequestBodyTransformed {
 @controller()
 class ApiController {
   @get('/recipes')
+  @auth(authHandler)
   @use(recipesValidator, transformQuery)
   async fetchRecipes(req: Request, res: Response): Promise<void> {
     const errors = validationResult(req)
