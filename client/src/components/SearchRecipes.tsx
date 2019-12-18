@@ -16,6 +16,7 @@ import { StoreState, Error, Recipe, ActionsTypes } from '../store/reducers'
 import Alert from './Alert'
 import { RecipesList } from './RecipesList'
 import { Spinner } from './Spinner'
+import { generateRandomSearch } from '../utils/generateRandomSearch'
 
 export type Search = string
 
@@ -89,7 +90,7 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
       dispatch({
         type: ActionsTypes.USER_ACTED_FALSE
       })
-      // place to synthetic request?
+
       return () => {
         dispatch({
           type: ActionsTypes.RECIPES_CLEANUP
@@ -105,6 +106,16 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
       setDisabled(true)
     }
   }, [search])
+
+  useEffect(() => {
+    const random = buildRecipesQuery(
+      generateRandomSearch(),
+      diet,
+      calories,
+      health
+    )
+    console.log(random)
+  }, [])
 
   /* local state handlers */
   const handleBtnOptClick = (e: SyntheticEvent) => {
