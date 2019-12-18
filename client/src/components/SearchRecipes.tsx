@@ -107,14 +107,36 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
     }
   }, [search])
 
+  /* generating a random request */
   useEffect(() => {
-    const random = buildRecipesQuery(
-      generateRandomSearch(),
-      diet,
-      calories,
-      health
-    )
-    console.log(random)
+    if (!userActed) {
+      const randomQuery = buildRecipesQuery(
+        generateRandomSearch(),
+        diet,
+        calories,
+        health
+      )
+      if (typeof randomQuery === 'string' && dispatch) {
+        dispatch(fetchRecipes(randomQuery, false, from.current))
+      }
+    }
+  }, [userActed])
+
+  /* tracking if the user scrolled to the bottom */
+  useEffect(() => {
+    const handler = (e: Event) => {
+      if (
+        Math.ceil(window.pageYOffset) + window.innerHeight >=
+        document.body.scrollHeight
+      ) {
+        console.log('this is bottom')
+      }
+    }
+    window.addEventListener('scroll', handler)
+
+    return () => {
+      window.removeEventListener('scroll', handler)
+    }
   }, [])
 
   /* local state handlers */
