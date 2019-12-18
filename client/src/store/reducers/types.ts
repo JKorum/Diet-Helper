@@ -38,6 +38,7 @@ export interface ProfileState {
 export interface RecipesState {
   fetched: Recipe[] | null
   more: undefined | boolean
+  infinite: boolean
   loading: boolean
   error: Error | null
 }
@@ -70,6 +71,8 @@ export enum ActionsTypes {
   RECIPES_LOADED_SUC = 'RECIPES_LOADED_SUC',
   RECIPES_ERROR = 'RECIPES_ERROR',
   RECIPES_CLEANUP = 'RECIPES_CLEANUP',
+  RECIPES_INFINITE_ALLOW = 'RECIPES_INFINITE_ALLOW',
+  RECIPES_INFINITE_BLOCK = 'RECIPES_INFINITE_BLOCK',
   SET_ALERT = 'SET_ALERT',
   REMOVE_ALERT = 'REMOVE_ALERT',
   LOGOUT = 'LOGOUT',
@@ -138,6 +141,12 @@ interface RecipesLoadedAction {
   }
 }
 
+interface RecipesInfiniteActions {
+  type:
+    | ActionsTypes.RECIPES_INFINITE_ALLOW
+    | ActionsTypes.RECIPES_INFINITE_BLOCK
+}
+
 interface RecipesErrorAction {
   type: ActionsTypes.RECIPES_ERROR
   payload: Error
@@ -150,6 +159,7 @@ export type RecipesActions =
   | LogoutAction
   | AccountDeletedAction
   | RecipesCleanupAction
+  | RecipesInfiniteActions
 
 interface SetAlertAction {
   type: ActionsTypes.SET_ALERT

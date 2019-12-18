@@ -44,6 +44,7 @@ interface SearchRecipesConnectedProps {
   more: boolean | undefined
   error: Error | null
   dispatch?: Function
+  infinite: boolean
 }
 
 const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
@@ -52,7 +53,8 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
   loading,
   more,
   error,
-  dispatch
+  dispatch,
+  infinite
 }) => {
   /* state for collapsing elements */
   const [btnOptState, toggleBtnOptState] = useState(false)
@@ -80,6 +82,9 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
   /* persistent state for pagination */
   const queryString = useRef('')
   const from = useRef(0)
+  const randomQueryString = useRef(
+    buildRecipesQuery(generateRandomSearch(), diet, calories, health)
+  )
 
   /* state for req submit button */
   const [disabled, setDisabled] = useState(true)
@@ -107,29 +112,56 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
     }
   }, [search])
 
-  /* generating a random request */
+  /* fire a random request */
   useEffect(() => {
     if (!userActed) {
-      const randomQuery = buildRecipesQuery(
-        generateRandomSearch(),
-        diet,
-        calories,
-        health
-      )
-      if (typeof randomQuery === 'string' && dispatch) {
-        dispatch(fetchRecipes(randomQuery, false, from.current))
+      if (typeof randomQueryString.current === 'string' && dispatch) {
+        dispatch(fetchRecipes(randomQueryString.current, false, from.current))
       }
     }
   }, [userActed])
 
-  /* tracking if the user scrolled to the bottom */
+  /* fire infinite requests */
   useEffect(() => {
     const handler = (e: Event) => {
+      /* user scrolled to bottom? */
       if (
         Math.ceil(window.pageYOffset) + window.innerHeight >=
         document.body.scrollHeight
       ) {
-        console.log('this is bottom')
+        /* there are recipes in store & infinite req is allowed? */
+        if (
+          Array.isArray(recipesIds) &&
+          recipesIds.length > 0 &&
+          infinite &&
+          dispatch
+        ) {
+          /* there are more recipes available on API? */
+          if (more) {
+            if (queryString.current) {
+              /* user already made req -> use their input */
+              from.current = from.current + 10
+              dispatch(fetchRecipes(queryString.current, true, from.current))
+            } else {
+              /* user didn't make req -> use generated input */
+              if (typeof randomQueryString.current === 'string') {
+                from.current = from.current + 10
+                dispatch(
+                  fetchRecipes(randomQueryString.current, true, from.current)
+                )
+              }
+            }
+          } else {
+            /* there are no recipes */
+            dispatch({
+              type: ActionsTypes.SET_ALERT,
+              payload: {
+                text: 'There are no more recipes matching the request.',
+                color: 'light'
+              }
+            })
+          }
+        }
       }
     }
     window.addEventListener('scroll', handler)
@@ -137,7 +169,7 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
     return () => {
       window.removeEventListener('scroll', handler)
     }
-  }, [])
+  }, [recipesIds, infinite])
 
   /* local state handlers */
   const handleBtnOptClick = (e: SyntheticEvent) => {
@@ -161,10 +193,11 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
     e.preventDefault()
 
     if (!userActed) {
-      /* first user req -> set ref to query */
+      /* first user req -> set ref to query && initialize from to default */
       const query = buildRecipesQuery(search, diet, calories, health)
       if (typeof query === 'string' && dispatch) {
         queryString.current = query
+        from.current = 0
         dispatch(fetchRecipes(query, false, from.current))
       }
     } else {
@@ -517,12 +550,13 @@ const mapStateToProps: MapStateToProps<
   SearchRecipesConnectedProps,
   SearchRecipesOwnProps,
   StoreState
-> = ({ recipes: { fetched, more, loading, error }, userActed }) => ({
+> = ({ recipes: { fetched, more, loading, error, infinite }, userActed }) => ({
   recipesIds: makeListOfRecipesId(fetched),
   userActed,
   more,
   loading,
-  error
+  error,
+  infinite
 })
 
 export default connect(mapStateToProps)(SearchRecipes)

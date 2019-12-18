@@ -33,6 +33,9 @@ export const fetchRecipes = (
       dispatch<RecipesActions>({
         type: ActionsTypes.LOAD_RECIPES
       })
+      dispatch<RecipesActions>({
+        type: ActionsTypes.RECIPES_INFINITE_BLOCK
+      })
 
       const response = await axios.get(`/api/recipes?${query}&from=${from}`)
       if (response.status === 200) {
@@ -57,6 +60,9 @@ export const fetchRecipes = (
               more
             }
           })
+          dispatch<RecipesActions>({
+            type: ActionsTypes.RECIPES_INFINITE_ALLOW
+          })
           return
         } else {
           dispatch<RecipesActions>({
@@ -65,6 +71,9 @@ export const fetchRecipes = (
               recipes,
               more
             }
+          })
+          dispatch<RecipesActions>({
+            type: ActionsTypes.RECIPES_INFINITE_ALLOW
           })
           return
         }
@@ -82,6 +91,9 @@ export const fetchRecipes = (
           dispatch<RecipesActions>({
             type: ActionsTypes.RECIPES_ERROR,
             payload: { error: response.data, status: response.status }
+          })
+          dispatch<RecipesActions>({
+            type: ActionsTypes.RECIPES_INFINITE_ALLOW
           })
 
           if (response.status === 404 || response.status === 500) {
@@ -101,6 +113,9 @@ export const fetchRecipes = (
             type: ActionsTypes.RECIPES_ERROR,
             payload: { error: 'Something went wrong', status: response.status }
           })
+          dispatch<RecipesActions>({
+            type: ActionsTypes.RECIPES_INFINITE_ALLOW
+          })
           dispatch<AlertActions>({
             type: ActionsTypes.SET_ALERT,
             payload: {
@@ -116,6 +131,9 @@ export const fetchRecipes = (
         dispatch<RecipesActions>({
           type: ActionsTypes.RECIPES_ERROR,
           payload: { error: 'Something went wrong', status: undefined }
+        })
+        dispatch<RecipesActions>({
+          type: ActionsTypes.RECIPES_INFINITE_ALLOW
         })
         dispatch<AlertActions>({
           type: ActionsTypes.SET_ALERT,
