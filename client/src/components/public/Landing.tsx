@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect, MapStateToProps } from 'react-redux'
-import { StoreState } from '../store/reducers'
+import { StoreState } from '../../store/reducers'
 
 interface LandingConnectedProps {
   authenticated: boolean

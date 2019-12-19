@@ -3,7 +3,7 @@ import {
   Diet,
   Calories,
   HealthBoxes
-} from '../components/SearchRecipes'
+} from '../components/private/SearchRecipes'
 
 interface Fragments {
   dietFragment: string | undefined

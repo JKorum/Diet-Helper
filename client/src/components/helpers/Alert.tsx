@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { connect, MapStateToProps } from 'react-redux'
 import { Dispatch } from 'redux'
-import { AlertState, StoreState } from '../store/reducers'
-import { AlertActions, ActionsTypes } from '../store/reducers'
+import { AlertState, StoreState } from '../../store/reducers'
+import { AlertActions, ActionsTypes } from '../../store/reducers'
 
 interface AlertOwnProps {}
 interface AlertConnectedProps {

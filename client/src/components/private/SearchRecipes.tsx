@@ -8,15 +8,15 @@ import React, {
   useRef
 } from 'react'
 import { connect, MapStateToProps } from 'react-redux'
-import { fetchRecipes } from '../store/actions'
-import Navigation from './Navigation'
-import UnregisterModal from './UnregisterModal'
-import { buildRecipesQuery } from '../utils/buildRecipesQuery'
-import { StoreState, Error, Recipe, ActionsTypes } from '../store/reducers'
-import Alert from './Alert'
+import { fetchRecipes } from '../../store/actions'
+import Navigation from '../helpers/Navigation'
+import UnregisterModal from '../modals/UnregisterModal'
+import { buildRecipesQuery } from '../../utils/buildRecipesQuery'
+import { StoreState, Error, Recipe, ActionsTypes } from '../../store/reducers'
+import Alert from '../helpers/Alert'
 import { RecipesList } from './RecipesList'
-import { Spinner } from './Spinner'
-import { generateRandomSearch } from '../utils/generateRandomSearch'
+import { Spinner } from '../helpers/Spinner'
+import { generateRandomSearch } from '../../utils/generateRandomSearch'
 
 export type Search = string
 
@@ -113,13 +113,13 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
   }, [search])
 
   /* fire a random request */
-  useEffect(() => {
-    if (!userActed) {
-      if (typeof randomQueryString.current === 'string' && dispatch) {
-        dispatch(fetchRecipes(randomQueryString.current, false, from.current))
-      }
-    }
-  }, [userActed])
+  // useEffect(() => {
+  //   if (!userActed) {
+  //     if (typeof randomQueryString.current === 'string' && dispatch) {
+  //       dispatch(fetchRecipes(randomQueryString.current, false, from.current))
+  //     }
+  //   }
+  // }, [userActed])
 
   /* fire infinite requests */
   useEffect(() => {

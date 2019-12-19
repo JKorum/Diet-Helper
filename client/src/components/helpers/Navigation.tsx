@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutUser } from '../store/actions'
+import { logoutUser } from '../../store/actions'
 
 interface NavConnectedProps {
   dispatch: Function

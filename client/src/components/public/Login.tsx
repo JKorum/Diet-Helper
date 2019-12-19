@@ -7,10 +7,10 @@ import React, {
 } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect, MapStateToProps } from 'react-redux'
-import { StoreState, Error } from '../store/reducers'
-import { LoginCredentials } from '../store/actions'
+import { StoreState, Error } from '../../store/reducers'
+import { LoginCredentials } from '../../store/actions'
 import { Fields } from './Register'
-import { loginUser } from '../store/actions'
+import { loginUser } from '../../store/actions'
 
 interface LoginConnectedProps {
   authenticated: boolean

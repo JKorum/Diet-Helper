@@ -6,7 +6,7 @@ import React, {
   SyntheticEvent
 } from 'react'
 import { connect } from 'react-redux'
-import { unregisterUser } from '../store/actions'
+import { unregisterUser } from '../../store/actions'
 
 interface UnregModalConnectedProps {
   dispatch?: Function

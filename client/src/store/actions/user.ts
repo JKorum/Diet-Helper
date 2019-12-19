@@ -11,7 +11,10 @@ import {
   UpdateProfileAction,
   ProfileUpdatedAction,
   ProfileUpdateError,
-  AlertActions
+  AlertActions,
+  CollectionErrorAction,
+  DeleteCollectionAction,
+  DeleteCollectionItemAction
 } from '../reducers/types'
 import { Sanitized } from '../../utils/sanitizers'
 
@@ -147,6 +150,157 @@ export const updateUser = (
         console.log('Error:', err.message)
         dispatch<ProfileUpdateError>({
           type: ActionsTypes.PROFILE_UPDATE_ERROR,
+          payload: { error: 'Something went wrong', status: undefined }
+        })
+        dispatch<AlertActions>({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text: 'Something went wrong. Please, try again later.',
+            color: 'danger'
+          }
+        })
+        return
+      }
+    }
+  }
+}
+
+export const deleteCollectionItem = (
+  id: string
+): ThunkAction<void, StoreState, null, Action<ActionsTypes>> => {
+  return async dispatch => {
+    try {
+      const response = await axios.delete(`/api/recipes/${id}`)
+      if (response.status === 204) {
+        dispatch<DeleteCollectionItemAction>({
+          type: ActionsTypes.COLLECTION_DELETE_ITEM,
+          payload: id
+        })
+        dispatch<AlertActions>({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text: 'The recipe is deleted.',
+            color: 'success'
+          }
+        })
+        return
+      }
+    } catch (err) {
+      const response: AxiosResponse | undefined = err.response
+      if (response) {
+        /* got response from server */
+        if (
+          response.status === 403 ||
+          response.status === 400 ||
+          response.status === 500 ||
+          response.status === 401
+        ) {
+          dispatch<CollectionErrorAction>({
+            type: ActionsTypes.COLLECTION_ERROR,
+            payload: { error: response.data, status: response.status }
+          })
+          dispatch<AlertActions>({
+            type: ActionsTypes.SET_ALERT,
+            payload: {
+              text:
+                'It looks like there is a problem with the server. Please, try again later.',
+              color: 'danger'
+            }
+          })
+          return
+        } else {
+          dispatch<CollectionErrorAction>({
+            type: ActionsTypes.COLLECTION_ERROR,
+            payload: { error: response.data, status: response.status }
+          })
+          dispatch<AlertActions>({
+            type: ActionsTypes.SET_ALERT,
+            payload: {
+              text: 'Something went wrong. Please, try again later.',
+              color: 'danger'
+            }
+          })
+          return
+        }
+      } else {
+        /* no response from server */
+        console.log('Error:', err.message)
+        dispatch<CollectionErrorAction>({
+          type: ActionsTypes.COLLECTION_ERROR,
+          payload: { error: 'Something went wrong', status: undefined }
+        })
+        dispatch<AlertActions>({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text: 'Something went wrong. Please, try again later.',
+            color: 'danger'
+          }
+        })
+        return
+      }
+    }
+  }
+}
+
+export const deleteCollection = (): ThunkAction<
+  void,
+  StoreState,
+  null,
+  Action<ActionsTypes>
+> => {
+  return async dispatch => {
+    try {
+      const response = await axios.delete('/api/recipes')
+      if (response.status === 204) {
+        dispatch<DeleteCollectionAction>({
+          type: ActionsTypes.DELETE_COLLECTION
+        })
+        dispatch<AlertActions>({
+          type: ActionsTypes.SET_ALERT,
+          payload: {
+            text: 'The collection is deleted.',
+            color: 'success'
+          }
+        })
+        return
+      }
+    } catch (err) {
+      const response: AxiosResponse | undefined = err.response
+      if (response) {
+        /* got response from server */
+        if (response.status === 500 || response.status === 401) {
+          dispatch<CollectionErrorAction>({
+            type: ActionsTypes.COLLECTION_ERROR,
+            payload: { error: response.data, status: response.status }
+          })
+          dispatch<AlertActions>({
+            type: ActionsTypes.SET_ALERT,
+            payload: {
+              text:
+                'It looks like there is a problem with the server. Please, try again later.',
+              color: 'danger'
+            }
+          })
+          return
+        } else {
+          dispatch<CollectionErrorAction>({
+            type: ActionsTypes.COLLECTION_ERROR,
+            payload: { error: response.data, status: response.status }
+          })
+          dispatch<AlertActions>({
+            type: ActionsTypes.SET_ALERT,
+            payload: {
+              text: 'Something went wrong. Please, try again later.',
+              color: 'danger'
+            }
+          })
+          return
+        }
+      } else {
+        /* no response from server */
+        console.log('Error:', err.message)
+        dispatch<CollectionErrorAction>({
+          type: ActionsTypes.COLLECTION_ERROR,
           payload: { error: 'Something went wrong', status: undefined }
         })
         dispatch<AlertActions>({

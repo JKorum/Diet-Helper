@@ -82,7 +82,24 @@ export enum ActionsTypes {
   REMOVE_PROFILE_ERROR = 'REMOVE_PROFILE_ERROR',
   UPDATE_PROFILE = 'UPDATE_PROFILE',
   PROFILE_UPDATED = 'PROFILE_UPDATED',
-  PROFILE_UPDATE_ERROR = 'PROFILE_UPDATE_ERROR'
+  PROFILE_UPDATE_ERROR = 'PROFILE_UPDATE_ERROR',
+  COLLECTION_DELETE_ITEM = 'COLLECTION_DELETE_ITEM',
+  DELETE_COLLECTION = 'DELETE_COLLECTION',
+  COLLECTION_ERROR = 'COLLECTION_ERROR'
+}
+
+export interface DeleteCollectionAction {
+  type: ActionsTypes.DELETE_COLLECTION
+}
+
+export interface DeleteCollectionItemAction {
+  type: ActionsTypes.COLLECTION_DELETE_ITEM
+  payload: string
+}
+
+export interface CollectionErrorAction {
+  type: ActionsTypes.COLLECTION_ERROR
+  payload: Error
 }
 
 export interface UserActedActions {
@@ -124,6 +141,9 @@ export type ProfileActions =
   | ProfileUpdatedAction
   | UpdateProfileAction
   | ProfileUpdateError
+  | DeleteCollectionAction
+  | DeleteCollectionItemAction
+  | CollectionErrorAction
 
 interface LoadRecipesAction {
   type: ActionsTypes.LOAD_RECIPES

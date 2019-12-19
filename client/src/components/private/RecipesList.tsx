@@ -5,7 +5,7 @@ import React, {
   SyntheticEvent
 } from 'react'
 import RecipeItem from './Recipe'
-import { RecipeModal } from './RecipeModal'
+import { RecipeModal } from '../modals/RecipeModal'
 
 interface RecipesListOwnProps {
   ids: string[] | null

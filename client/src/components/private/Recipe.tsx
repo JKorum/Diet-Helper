@@ -1,6 +1,6 @@
 import React, { FunctionComponent, SyntheticEvent } from 'react'
 import { connect, MapStateToProps } from 'react-redux'
-import { StoreState, Recipe } from '../store/reducers'
+import { StoreState, Recipe } from '../../store/reducers'
 import { RecipeModalData, SetRecipeListState } from './RecipesList'
 
 interface RecipeOwnProps {

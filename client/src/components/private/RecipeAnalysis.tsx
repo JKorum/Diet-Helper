@@ -9,16 +9,16 @@ import React, {
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { AlertActions, ActionsTypes } from '../store/reducers'
-import { Error } from '../store/reducers'
+import { AlertActions, ActionsTypes } from '../../store/reducers'
+import { Error } from '../../store/reducers'
 import {
   ParsedAnalysisResult,
   parseAnalysisResult
-} from '../utils/parseAnalysis'
-import Navigation from './Navigation'
-import UnregisterModal from './UnregisterModal'
-import { AnalysisModal } from './AnalysisModal'
-import Alert from './Alert'
+} from '../../utils/parseAnalysis'
+import Navigation from '../helpers/Navigation'
+import UnregisterModal from '../modals/UnregisterModal'
+import { AnalysisModal } from '../modals/AnalysisModal'
+import Alert from '../helpers/Alert'
 
 interface RecAnalysisConnectedProps {
   dispatch: Dispatch<AlertActions>

@@ -1,4 +1,4 @@
-import { CredFormData } from '../components/ChangeCredentials'
+import { CredFormData } from '../components/private/ChangeCredentials'
 
 export interface Sanitized {
   newName?: string

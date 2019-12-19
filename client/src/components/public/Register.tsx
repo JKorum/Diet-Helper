@@ -7,8 +7,8 @@ import React, {
 } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect, MapStateToProps } from 'react-redux'
-import { StoreState, User, Error } from '../store/reducers'
-import { registerUser, RegisterCredentials } from '../store/actions'
+import { StoreState, User, Error } from '../../store/reducers'
+import { registerUser, RegisterCredentials } from '../../store/actions'
 
 export enum Fields {
   name = 'name',

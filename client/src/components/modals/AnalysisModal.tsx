@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { ParsedAnalysisResult } from '../utils/parseAnalysis'
+import { ParsedAnalysisResult } from '../../utils/parseAnalysis'
 
 interface AnalysisModalProps {
   title: string

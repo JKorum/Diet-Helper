@@ -7,14 +7,14 @@ import React, {
   useEffect
 } from 'react'
 import { connect, MapStateToProps } from 'react-redux'
-import Navigation from './Navigation'
-import { Fields } from './Register'
-import { StoreState, User } from '../store/reducers'
-import { updateSanitizer } from '../utils/sanitizers'
-import { ActionsTypes, Error } from '../store/reducers'
-import { updateUser } from '../store/actions'
-import UnregisterModal from './UnregisterModal'
-import Alert from './Alert'
+import Navigation from '../helpers/Navigation'
+import { Fields } from '../public/Register'
+import { StoreState, User } from '../../store/reducers'
+import { updateSanitizer } from '../../utils/sanitizers'
+import { ActionsTypes, Error } from '../../store/reducers'
+import { updateUser } from '../../store/actions'
+import UnregisterModal from '../modals/UnregisterModal'
+import Alert from '../helpers/Alert'
 
 interface ChangeCredConnectedProps {
   loading: boolean

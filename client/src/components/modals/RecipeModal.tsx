@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { RecipeModalData } from './RecipesList'
+import { RecipeModalData } from '../private/RecipesList'
 
 interface RecipeModalOwnProps {
   data: RecipeModalData
