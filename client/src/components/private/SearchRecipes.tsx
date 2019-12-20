@@ -52,7 +52,6 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
   userActed,
   loading,
   more,
-  error,
   dispatch,
   infinite
 }) => {
@@ -113,13 +112,13 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
   }, [search])
 
   /* fire a random request */
-  // useEffect(() => {
-  //   if (!userActed) {
-  //     if (typeof randomQueryString.current === 'string' && dispatch) {
-  //       dispatch(fetchRecipes(randomQueryString.current, false, from.current))
-  //     }
-  //   }
-  // }, [userActed])
+  useEffect(() => {
+    if (!userActed) {
+      if (typeof randomQueryString.current === 'string' && dispatch) {
+        dispatch(fetchRecipes(randomQueryString.current, false, from.current))
+      }
+    }
+  }, [userActed])
 
   /* fire infinite requests */
   useEffect(() => {
