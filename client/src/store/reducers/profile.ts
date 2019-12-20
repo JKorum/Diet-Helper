@@ -77,6 +77,16 @@ export const profileReducer = (
         loading: false,
         error: action.payload
       }
+    case ActionsTypes.COLLECTION_SAVE_ITEM:
+      if (state.user) {
+        const recipes = [...state.user.recipes, action.payload]
+        return {
+          ...state,
+          user: { ...state.user, recipes }
+        }
+      } else {
+        return state
+      }
     case ActionsTypes.COLLECTION_DELETE_ITEM:
       if (state.user && state.user.recipes.length > 0) {
         const recipes = state.user.recipes.filter(

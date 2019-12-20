@@ -113,7 +113,7 @@ const CollectedRecipe: FunctionComponent<CollectedRecipeConnectedProps> = ({
     return null
   } else {
     return (
-      <div id={cardId} className='card mb-3 animated'>
+      <div id={cardId} className='card mb-3 animated fadeIn'>
         <div className='card-header'>
           <button
             id={titleId}

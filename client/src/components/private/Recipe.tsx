@@ -1,7 +1,8 @@
-import React, { FunctionComponent, SyntheticEvent } from 'react'
+import React, { FunctionComponent, SyntheticEvent, useState } from 'react'
 import { connect, MapStateToProps } from 'react-redux'
-import { StoreState, Recipe } from '../../store/reducers'
+import { StoreState, Recipe, ActionsTypes } from '../../store/reducers'
 import { RecipeModalData, SetRecipeListState } from './RecipesList'
+import { saveCollectionItem } from '../../store/actions'
 
 interface RecipeOwnProps {
   id: string
@@ -10,13 +11,19 @@ interface RecipeOwnProps {
 
 interface RecipeConnectedProps {
   recipe: Recipe | undefined
+  titlesFromCollection: string[]
   handler?: SetRecipeListState
+  dispatch?: Function
 }
 
 const RecipeItem: FunctionComponent<RecipeConnectedProps> = ({
+  titlesFromCollection,
   recipe,
-  handler
+  handler,
+  dispatch
 }) => {
+  const [loading, setLoading] = useState(false)
+
   if (recipe) {
     const data: RecipeModalData = {
       label: recipe.label,
@@ -27,12 +34,35 @@ const RecipeItem: FunctionComponent<RecipeConnectedProps> = ({
         total: Math.round(recipe.calories),
         perServing: Math.round(recipe.calories / recipe.yield),
         per100g: Math.round((recipe.calories * 100) / recipe.totalWeight)
-      }
+      },
+      recipeToSave: recipe
     }
 
     const handleClick = (e: SyntheticEvent) => {
       if (handler) {
         handler(data)
+      }
+    }
+
+    const handleSaveRecipe = async (e: SyntheticEvent) => {
+      if (dispatch) {
+        setLoading(true)
+        /* the recipe is already in collection? */
+        if (!titlesFromCollection.includes(data.label.toLowerCase())) {
+          /* no -> proceed */
+          await dispatch(saveCollectionItem(recipe, false))
+          setLoading(false)
+        } else {
+          /* yes -> stop */
+          setLoading(false)
+          dispatch({
+            type: ActionsTypes.SET_ALERT,
+            payload: {
+              text: 'The recipe is already in the collection.',
+              color: 'light'
+            }
+          })
+        }
       }
     }
 
@@ -67,7 +97,18 @@ const RecipeItem: FunctionComponent<RecipeConnectedProps> = ({
           >
             Learn More
           </button>
-          <button className='btn btn-outline-primary btn-sm mb-1'>
+          <button
+            className='btn btn-outline-primary btn-sm mb-1'
+            onClick={handleSaveRecipe}
+          >
+            <span
+              className='spinner-border spinner-border-sm'
+              role='status'
+              aria-hidden='true'
+              style={
+                loading ? { display: 'inline-block' } : { display: 'none' }
+              }
+            ></span>{' '}
             Add To Collection
           </button>
         </div>
@@ -82,13 +123,21 @@ const mapStateToProps: MapStateToProps<
   RecipeConnectedProps,
   RecipeOwnProps,
   StoreState
-> = ({ recipes: { fetched } }, { id }) => {
-  if (Array.isArray(fetched)) {
+> = ({ profile: { user }, recipes: { fetched } }, { id }) => {
+  if (Array.isArray(fetched) && user) {
+    let titlesFromCollection: string[] = []
+    if (user.recipes.length > 0) {
+      titlesFromCollection = user.recipes.map(recipe =>
+        recipe.label.toLowerCase()
+      )
+    }
     return {
+      titlesFromCollection,
       recipe: fetched.find(recipe => recipe.clientSideId === id)
     }
   } else {
     return {
+      titlesFromCollection: [],
       recipe: undefined
     }
   }

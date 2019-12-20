@@ -1,11 +1,7 @@
-import React, {
-  FunctionComponent,
-  Fragment,
-  useState,
-  SyntheticEvent
-} from 'react'
+import React, { FunctionComponent, Fragment, useState } from 'react'
 import RecipeItem from './Recipe'
-import { RecipeModal } from '../modals/RecipeModal'
+import RecipeModal from '../modals/RecipeModal'
+import { Recipe } from '../../store/reducers'
 
 interface RecipesListOwnProps {
   ids: string[] | null
@@ -21,6 +17,7 @@ export interface RecipeModalData {
     perServing: number
     per100g: number
   }
+  recipeToSave: Recipe
 }
 
 export type SetRecipeListState = (data: RecipeModalData) => void

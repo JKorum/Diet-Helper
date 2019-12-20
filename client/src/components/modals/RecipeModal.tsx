@@ -1,13 +1,91 @@
-import React, { FunctionComponent } from 'react'
+import React, {
+  FunctionComponent,
+  useState,
+  SyntheticEvent,
+  useEffect
+} from 'react'
 import { RecipeModalData } from '../private/RecipesList'
+import { connect, MapStateToProps } from 'react-redux'
+import { StoreState, ActionsTypes, Error } from '../../store/reducers'
+import { saveCollectionItem } from '../../store/actions'
 
 interface RecipeModalOwnProps {
   data: RecipeModalData
 }
 
-export const RecipeModal: FunctionComponent<RecipeModalOwnProps> = ({
-  data
+interface RecipeModalConnectedProps extends RecipeModalOwnProps {
+  dispatch?: Function
+  titlesFromCollection: string[]
+  error: Error | null
+}
+
+const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
+  data,
+  dispatch,
+  titlesFromCollection,
+  error
 }) => {
+  const [loading, setLoading] = useState(false)
+  const [addBtnStatus, setAddBtnStatus] = useState('Add To Collection')
+
+  const handleSaveRecipe = async (e: SyntheticEvent) => {
+    if (dispatch) {
+      setLoading(true)
+      /* the recipe is already in collection? */
+      if (!titlesFromCollection.includes(data.label.toLowerCase())) {
+        /* no -> proceed */
+        await dispatch(saveCollectionItem(data.recipeToSave, true))
+        setLoading(false)
+        setAddBtnStatus('Added')
+      } else {
+        /* yes -> stop */
+        setLoading(false)
+        setAddBtnStatus('Already in Collection')
+      }
+    }
+  }
+
+  /* setting button state to default & clean up profile error */
+  useEffect(() => {
+    const $modal = document.getElementById('recipeModal')
+
+    if ($modal) {
+      const callback = function(
+        mutationList: MutationRecord[],
+        observer: MutationObserver
+      ) {
+        for (let mutation of mutationList) {
+          const element = mutation.target as HTMLElement
+          const attrMap = element.attributes
+
+          const styleAttr = attrMap.getNamedItem('style')
+          if (styleAttr) {
+            if (styleAttr.value.includes('display: none;')) {
+              setAddBtnStatus('Add To Collection')
+
+              if (error && dispatch) {
+                dispatch({
+                  type: ActionsTypes.REMOVE_PROFILE_ERROR
+                })
+              }
+            }
+          }
+        }
+      }
+
+      const config: MutationObserverInit = {
+        attributes: true,
+        attributeFilter: ['style']
+      }
+      const observer = new MutationObserver(callback)
+      observer.observe($modal, config)
+
+      return () => {
+        observer.disconnect()
+      }
+    }
+  })
+
   return (
     <div
       className='modal fade'
@@ -71,10 +149,29 @@ export const RecipeModal: FunctionComponent<RecipeModalOwnProps> = ({
                   ))}
               </tbody>
             </table>
+
+            {error && (
+              <div className='alert alert-danger mb-0' role='alert'>
+                <strong>Error.</strong> Something went wrong. Please, try again
+                later.
+              </div>
+            )}
           </div>
           <div className='modal-footer'>
-            <button type='button' className='btn btn-outline-primary'>
-              Add To Collection
+            <button
+              type='button'
+              className='btn btn-outline-primary'
+              onClick={handleSaveRecipe}
+            >
+              <span
+                className='spinner-border spinner-border-sm'
+                role='status'
+                aria-hidden='true'
+                style={
+                  loading ? { display: 'inline-block' } : { display: 'none' }
+                }
+              ></span>{' '}
+              {addBtnStatus}
             </button>
             <button
               type='button'
@@ -89,3 +186,35 @@ export const RecipeModal: FunctionComponent<RecipeModalOwnProps> = ({
     </div>
   )
 }
+
+const mapStateToProps: MapStateToProps<
+  RecipeModalConnectedProps,
+  RecipeModalOwnProps,
+  StoreState
+> = ({ profile: { user, error } }, { data }) => {
+  if (user) {
+    if (user.recipes.length > 0) {
+      return {
+        titlesFromCollection: user.recipes.map(recipe =>
+          recipe.label.toLowerCase()
+        ),
+        data,
+        error
+      }
+    } else {
+      return {
+        titlesFromCollection: [],
+        data,
+        error
+      }
+    }
+  } else {
+    return {
+      titlesFromCollection: [],
+      data,
+      error
+    }
+  }
+}
+
+export default connect(mapStateToProps)(RecipeModal)
