@@ -1,0 +1,23 @@
+{
+  "name": "diet_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ./server && npm install --prefix ./client && npm run build --prefix ./client",
+    "start": "node ./server/build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JKorum/Diet-Helper.git"
+  },
+  "author": "Konstantin Proshin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JKorum/Diet-Helper/issues"
+  },
+  "homepage": "https://github.com/JKorum/Diet-Helper#readme",
+  "engines": {
+    "node": "12.6.0"
+  }
+}

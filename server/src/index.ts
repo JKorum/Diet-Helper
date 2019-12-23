@@ -3,6 +3,7 @@ import express from 'express'
 import sessions from 'client-sessions'
 import chalk from 'chalk'
 import { AppRouter } from './AppRouter'
+import path from 'path'
 
 config()
 
@@ -36,6 +37,14 @@ if (!pass) {
 
 app.use(express.json())
 app.use('/api', AppRouter.getInstance())
+
+//serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../client/build')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/build/index.html'))
+  })
+}
 
 app.listen(port, () => {
   console.log(chalk.black.bgGreen(`Server is running on port: ${port}`))

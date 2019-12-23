@@ -66,7 +66,7 @@ var connect = function (url, mode) { return __awaiter(void 0, void 0, void 0, fu
         }
     });
 }); };
-if (process.env.NODE === 'production') {
+if (process.env.NODE_ENV === 'production') {
     var url = process.env.DB_URL_PROD;
     if (!url) {
         console.log(chalk_1.default.black.bgRed('env variable DB_URL_PROD inaccessible'));

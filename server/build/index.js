@@ -8,6 +8,7 @@ var express_1 = __importDefault(require("express"));
 var client_sessions_1 = __importDefault(require("client-sessions"));
 var chalk_1 = __importDefault(require("chalk"));
 var AppRouter_1 = require("./AppRouter");
+var path_1 = __importDefault(require("path"));
 dotenv_1.config();
 require("./database/config");
 var app = express_1.default();
@@ -33,6 +34,13 @@ else if (typeof pass === 'string') {
 }
 app.use(express_1.default.json());
 app.use('/api', AppRouter_1.AppRouter.getInstance());
+//serve static assets in production
+if (true) {
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../../client/build/public')));
+    app.get('*', function (req, res) {
+        res.sendFile(path_1.default.join(__dirname, '../../client/build/index.html'));
+    });
+}
 app.listen(port, function () {
     console.log(chalk_1.default.black.bgGreen("Server is running on port: " + port));
 });

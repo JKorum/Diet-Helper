@@ -16,7 +16,7 @@ const connect = async (url: string, mode: string): Promise<void> => {
   }
 }
 
-if (process.env.NODE === 'production') {
+if (process.env.NODE_ENV === 'production') {
   const url = process.env.DB_URL_PROD
   if (!url) {
     console.log(chalk.black.bgRed('env variable DB_URL_PROD inaccessible'))

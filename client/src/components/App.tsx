@@ -10,6 +10,7 @@ import ChangeCredentials from './private/ChangeCredentials'
 import Landing from './public/Landing'
 import Login from './public/Login'
 import Register from './public/Register'
+import { NotFound } from './public/NotFound'
 
 import { synchronizer } from '../store/actions'
 
@@ -39,7 +40,7 @@ export const App: FunctionComponent<AppConnectedProps> = ({ dispatch }) => {
         <PrivateRoute path='/analysis' component={RecipeAnalysis} />
         <PrivateRoute path='/credentials' component={ChangeCredentials} />
         <Route path='*'>
-          <h1>Not Found</h1>
+          <NotFound />
         </Route>
       </Switch>
     </BrowserRouter>
