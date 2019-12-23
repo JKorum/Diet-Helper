@@ -1,3 +1,25 @@
+/* colors */
+$purple-light: #926fca;
+$blue-light: lighten($blue, 10%);
+$blue-dark: #124f64;
+$blue-dark-lighten: lighten($blue-dark, 15%);
+$green-dark: #14a270;
+
+/* general */
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: $black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Ubuntu', sans-serif;
+}
+
 .background {
   background: grey;
   height: 100vh;
@@ -16,18 +38,142 @@ span.nav-link {
   }
 }
 
-// Small devices (landscape phones, 576px and up)
-// @media (min-width: 576px) { ... }
+/* background */
+.background {
+  background: url('../media/berries.png') repeat;
+  animation: slide 50s linear infinite;
+  -webkit-animation: slide 50s linear infinite;
+  background-size: 600px 600px;
+}
 
-// Medium devices (tablets, 768px and up) --> md
-// @media (min-width: 768px) {
-//   .img-fixed {
-//     background-size: 50%;
-//   }
-// }
+@keyframes slide {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 400px 400px;
+  }
+}
 
-// Large devices (desktops, 992px and up)
-// @media (min-width: 992px) { ... }
+@-webkit-keyframes slide {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 400px 400px;
+  }
+}
 
-// Extra large devices (large desktops, 1200px and up)
-// @media (min-width: 1200px) { ... }
+/* landing */
+.jumbotron {
+  background: #fff;
+}
+
+/* buttons */
+.btn-cool {
+  border: 1.2px solid $green;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    height: 0;
+    width: 120%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: $green;
+    transition: all 200ms ease-out;
+    z-index: 2;
+  }
+
+  p {
+    margin: 0;
+    color: $green;
+    transition: all 200ms ease-out;
+    z-index: 3;
+    position: relative;
+    display: inline-block;
+  }
+
+  span {
+    color: $green;
+    position: relative;
+    z-index: 3;
+  }
+
+  &:hover {
+    background: $green;
+    span {
+      color: #fff;
+    }
+  }
+
+  &:hover p {
+    color: #fff;
+    transform: scale(1.1);
+  }
+
+  &:hover::before {
+    height: 300%;
+  }
+}
+
+.btn-cool-cancel {
+  border: 1.2px solid $blue;
+  &::before {
+    background: $blue;
+  }
+  p {
+    color: $blue;
+  }
+  span {
+    color: $blue;
+  }
+  &:hover {
+    background: $blue;
+  }
+}
+
+/* navigation */
+.navbar {
+  background: url('../media/berries.png');
+  background-size: 300px 300px;
+  border-bottom: 1.5px solid $blue;
+
+  .badge-nav {
+    display: inline-block;
+    background: rgba($blue-dark, 0.9);
+    border-radius: 0.3rem;
+    padding: 0.05rem 0.3rem;
+
+    p {
+      margin-bottom: 0;
+      color: #fff;
+      display: inline-block;
+    }
+
+    i {
+      color: #fff;
+    }
+  }
+
+  .nav-link::after {
+    color: #fff;
+    background: rgba($blue-dark, 0.9);
+  }
+
+  .navbar-toggler {
+    background: rgba($blue-dark, 0.9);
+    i {
+      color: #fff;
+    }
+  }
+}
+
+/* spinner */
+#spinner {
+  border-color: $blue-dark;
+  border-right-color: transparent;
+}

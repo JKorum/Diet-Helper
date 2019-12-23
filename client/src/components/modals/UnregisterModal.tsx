@@ -123,19 +123,20 @@ const UnregisterModal: FunctionComponent<UnregModalConnectedProps> = ({
             <button
               form='account-deletion'
               type='submit'
-              className='btn btn-outline-primary'
+              className='btn btn-cool'
               disabled={disabled}
+              style={{ pointerEvents: disabled ? 'none' : 'auto' }}
               data-toggle='modal'
               data-target='#unregisterModal'
             >
-              Submit
+              <p>Submit</p>
             </button>
             <button
               type='button'
-              className='btn btn-outline-secondary'
+              className='btn btn-cool btn-cool-cancel'
               data-dismiss='modal'
             >
-              Cancel
+              <p>Cancel</p>
             </button>
           </div>
         </div>

@@ -189,27 +189,29 @@ const RecipeAnalysis: FunctionComponent<RecAnalysisConnectedProps> = ({
               </div>
               <button
                 type='submit'
-                className='btn btn-outline-primary mr-1'
+                className='btn btn-cool mr-1'
                 disabled={submitDisabled}
+                style={{ pointerEvents: submitDisabled ? 'none' : 'auto' }}
               >
                 <span
-                  className='spinner-border spinner-border-sm'
+                  className='spinner-border spinner-border-sm align-middle'
                   role='status'
                   aria-hidden='true'
                   style={
                     loading ? { display: 'inline-block' } : { display: 'none' }
                   }
                 ></span>{' '}
-                Submit
+                <p>Submit</p>
               </button>
               <button
                 type='button'
-                className='btn btn-outline-secondary'
+                className='btn btn-cool'
                 data-toggle='modal'
                 data-target='#analysisModal'
                 disabled={resultDisabled}
+                style={{ pointerEvents: resultDisabled ? 'none' : 'auto' }}
               >
-                Results
+                <p>Results</p>
               </button>
             </form>
           </div>

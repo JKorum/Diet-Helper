@@ -156,11 +156,12 @@ const ChangeCredentials: FunctionComponent<ChangeCredConnectedProps> = ({
               <button
                 id='submit'
                 type='submit'
-                className='btn btn-outline-primary'
+                className='btn btn-cool'
                 disabled={disabled}
+                style={{ pointerEvents: disabled ? 'none' : 'auto' }}
               >
                 <span
-                  className='spinner-border spinner-border-sm'
+                  className='spinner-border spinner-border-sm align-middle'
                   role='status'
                   aria-hidden='true'
                   style={
@@ -169,7 +170,7 @@ const ChangeCredentials: FunctionComponent<ChangeCredConnectedProps> = ({
                       : { display: 'none' }
                   }
                 ></span>{' '}
-                Submit
+                <p>Submit</p>
               </button>
             </form>
           </div>

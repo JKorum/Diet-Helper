@@ -21,14 +21,14 @@ export const Landing: FunctionComponent<LandingConnectedProps> = ({
           <div className='container'>
             <h1 className='display-1'>Diet Helper</h1>
             <p className='lead'>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              The tool for diet planning and nutrition analysis.
             </p>
             <hr className='my-4' />
-            <Link to='/login' className='btn btn-outline-primary mr-1 btn-lg'>
-              Login
+            <Link to='/login' className='btn btn-lg btn-cool mr-1 mb-1'>
+              <p>Login</p>
             </Link>
-            <Link to='/register' className='btn btn-outline-primary btn-lg'>
-              Register
+            <Link to='/register' className='btn btn-lg btn-cool mb-1'>
+              <p>Register</p>
             </Link>
           </div>
         </div>

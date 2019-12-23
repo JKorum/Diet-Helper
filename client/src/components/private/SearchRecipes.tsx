@@ -278,11 +278,14 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
                 />
                 <div className='input-group-append'>
                   <button
-                    className='btn btn-outline-primary'
+                    className='btn btn-cool'
                     type='submit'
                     disabled={disabled}
+                    style={{ pointerEvents: disabled ? 'none' : 'auto' }}
                   >
-                    <i className='fas fa-search'></i>
+                    <p>
+                      <i className='fas fa-search'></i>
+                    </p>
                   </button>
                 </div>
               </div>
@@ -290,7 +293,7 @@ const SearchRecipes: FunctionComponent<SearchRecipesConnectedProps> = ({
                 Please, separate the ingredients with spaces.
               </small>
               <button
-                className='btn btn-outline-primary btn-sm'
+                className='btn btn-outline-success btn-sm'
                 type='button'
                 data-toggle='collapse'
                 data-target='#search-filters'

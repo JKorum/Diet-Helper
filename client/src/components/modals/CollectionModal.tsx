@@ -57,19 +57,19 @@ const CollectionModal: FunctionComponent<CollectionModalConnectedProps> = ({
           <div className='modal-footer'>
             <button
               type='button'
-              className='btn btn-outline-primary'
+              className='btn btn-cool'
               data-toggle='modal'
               data-target='#collectionModal'
               onClick={handleDelete}
             >
-              Submit
+              <p>Submit</p>
             </button>
             <button
               type='button'
-              className='btn btn-outline-secondary'
+              className='btn btn-cool btn-cool-cancel'
               data-dismiss='modal'
             >
-              Cancel
+              <p>Cancel</p>
             </button>
           </div>
         </div>

@@ -13,14 +13,10 @@ const Navigation: FunctionComponent<NavConnectedProps> = ({ dispatch }) => {
   }
 
   return (
-    <nav className='navbar navbar-expand-sm navbar-light bg-light'>
+    <nav className='navbar navbar-expand-sm navbar-light'>
       <div className='container align-items-baseline'>
-        <span className='navbar-brand'>
-          <i className='fas fa-carrot fa-2x'></i>
-        </span>
-
         <button
-          className='navbar-toggler'
+          className='navbar-toggler ml-auto'
           type='button'
           data-toggle='collapse'
           data-target='#navbarContent'
@@ -28,7 +24,7 @@ const Navigation: FunctionComponent<NavConnectedProps> = ({ dispatch }) => {
           aria-expanded='false'
           aria-label='Toggle navigation'
         >
-          <span className='navbar-toggler-icon'></span>
+          <i className='fas fa-bars'></i>
         </button>
 
         <div
@@ -38,30 +34,39 @@ const Navigation: FunctionComponent<NavConnectedProps> = ({ dispatch }) => {
           <ul className='navbar-nav'>
             <li className='nav-item'>
               <NavLink className='nav-link' to='/search'>
-                Search
+                <span id='nav-search' className='badge-nav'>
+                  <p>Search</p>
+                </span>
               </NavLink>
             </li>
             <li className='nav-item'>
               <NavLink className='nav-link' to='/collection'>
-                Collection
+                <span id='nav-collection' className='badge-nav'>
+                  <p>Collection</p>
+                </span>
               </NavLink>
             </li>
             <li className='nav-item'>
               <NavLink className='nav-link' to='/analysis'>
-                Analysis
+                <span id='nav-analysis' className='badge-nav'>
+                  <p>Analysis</p>
+                </span>
               </NavLink>
             </li>
             <li className='nav-item dropdown'>
               <span
-                className='nav-link dropdown-toggle'
+                className='nav-link'
+                data-toggle='dropdown'
                 id='navbarDropdown'
                 role='button'
-                data-toggle='dropdown'
                 aria-haspopup='true'
                 aria-expanded='false'
               >
-                Account
+                <span id='nav-account' className='badge-nav'>
+                  <p>Account</p> <i className='fas fa-caret-left'></i>
+                </span>
               </span>
+
               <div className='dropdown-menu' aria-labelledby='navbarDropdown'>
                 <span className='dropdown-item' onClick={handleLogout}>
                   Exit

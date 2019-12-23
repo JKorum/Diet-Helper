@@ -116,11 +116,11 @@ const Login: FunctionComponent<LoginConnectedProps> = ({
                 </form>
                 <button
                   type='submit'
-                  className='btn btn-outline-primary mr-1'
+                  className='btn btn-cool mr-1'
                   form='login'
                 >
                   <span
-                    className='spinner-border spinner-border-sm'
+                    className='spinner-border spinner-border-sm align-middle'
                     role='status'
                     aria-hidden='true'
                     style={
@@ -129,10 +129,10 @@ const Login: FunctionComponent<LoginConnectedProps> = ({
                         : { display: 'none' }
                     }
                   ></span>{' '}
-                  Submit
+                  <p>Submit</p>
                 </button>
-                <Link to='/' className='btn btn-outline-primary'>
-                  Go Back
+                <Link to='/' className='btn btn-cool btn-cool-cancel'>
+                  <p>Go Back</p>
                 </Link>
               </div>
             </div>

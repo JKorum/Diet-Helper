@@ -26,7 +26,7 @@ const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
   error
 }) => {
   const [loading, setLoading] = useState(false)
-  const [addBtnStatus, setAddBtnStatus] = useState('Add To Collection')
+  const [addBtnStatus, setAddBtnStatus] = useState('Collect')
 
   const handleSaveRecipe = async (e: SyntheticEvent) => {
     if (dispatch) {
@@ -40,7 +40,7 @@ const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
       } else {
         /* yes -> stop */
         setLoading(false)
-        setAddBtnStatus('Already in Collection')
+        setAddBtnStatus('Already collected')
       }
     }
   }
@@ -111,19 +111,21 @@ const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
             </button>
           </div>
           <div className='modal-body'>
-            <p>
-              <span className='badge badge-dark'>kcal</span>{' '}
-              <span className='badge badge-dark'>
+            <p className='lead'>
+              <span className='badge badge-primary font-weight-normal'>
+                kcal
+              </span>{' '}
+              <span className='badge badge-primary font-weight-normal'>
                 {data.calories.total} total
               </span>{' '}
-              <span className='badge badge-dark'>
+              <span className='badge badge-primary font-weight-normal'>
                 {data.calories.perServing} per serving
               </span>{' '}
-              <span className='badge badge-dark'>
+              <span className='badge badge-primary font-weight-normal'>
                 {data.calories.per100g} per 100g
               </span>
             </p>
-            <p className='lead'>
+            <p>
               {`The recipe was originally published on '${data.source}.' You can
               get to know the cooking instructions by navigating to their`}
               <a
@@ -134,12 +136,11 @@ const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
               >
                 {' '}
                 website.
-              </a>
-            </p>
-            <p className='lead'>
+              </a>{' '}
               To follow along, you will need the following:
             </p>
-            <table className='table table-sm table-hover'>
+
+            <table className='table table-sm table-striped'>
               <tbody>
                 {data.ingredientLines.length > 0 &&
                   data.ingredientLines.map((line, index) => (
@@ -160,25 +161,25 @@ const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
           <div className='modal-footer'>
             <button
               type='button'
-              className='btn btn-outline-primary'
+              className='btn btn-cool'
               onClick={handleSaveRecipe}
             >
               <span
-                className='spinner-border spinner-border-sm'
+                className='spinner-border spinner-border-sm align-middle'
                 role='status'
                 aria-hidden='true'
                 style={
                   loading ? { display: 'inline-block' } : { display: 'none' }
                 }
               ></span>{' '}
-              {addBtnStatus}
+              <p>{addBtnStatus}</p>
             </button>
             <button
               type='button'
-              className='btn btn-outline-secondary'
+              className='btn btn-cool btn-cool-cancel'
               data-dismiss='modal'
             >
-              Cancel
+              <p>Cancel</p>
             </button>
           </div>
         </div>

@@ -48,58 +48,60 @@ export const AnalysisModal: FunctionComponent<AnalysisModalProps> = ({
           </div>
 
           <div className='modal-body'>
-            <p className='lead'>
+            <p>
               It looks like the ratio of energy sources in the recipe '{title}'
               is {totalRatio.protein}% protein, {totalRatio.fat}% fat, and{' '}
               {totalRatio.carbs}% carbs.
             </p>
-            <p className='lead'>
+            <p>
               USDA recommends adhering to 10-35% protein, 20-35% fat, and 45-65%
-              in your daily calorie consumption.*
+              carbs in your daily calorie consumption.*
             </p>
 
             <div className='container-fluid px-0'>
               <div className='row justify-content-center no-gutters'>
                 <div className='col'>
-                  <table className='table table-sm table-hover'>
+                  <table className='table table-sm table-striped table-borderless '>
                     <tbody>
                       <tr>
-                        <td className='border-top-0 font-weight-bold'>
-                          Total kcal
+                        <td>
+                          <strong>Total kcal</strong>
                         </td>
-                        <td className='border-top-0 font-weight-bold'>
-                          {totalCal}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='font-weight-light pl-3'>from protein</td>
-                        <td className='font-weight-light'>{proteinCalTotal}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-weight-light pl-3'>from fat</td>
-                        <td className='font-weight-light'>{fatCalTotal}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-weight-light pl-3'>from carbs</td>
-                        <td className='font-weight-light'>{carbsCalTotal}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-weight-bold'>Kcal per 100g</td>
-                        <td className='font-weight-bold'>{calPer100g}</td>
-                      </tr>
-                      <tr>
-                        <td className='font-weight-light pl-3'>from protein</td>
-                        <td className='font-weight-light'>
-                          {proteinCalPer100}
+                        <td>
+                          <strong>{totalCal}</strong>
                         </td>
                       </tr>
                       <tr>
-                        <td className='font-weight-light pl-3'>from fat</td>
-                        <td className='font-weight-light'>{fatCalPer100}</td>
+                        <td>from protein</td>
+                        <td>{proteinCalTotal}</td>
                       </tr>
                       <tr>
-                        <td className='font-weight-light pl-3'>from carbs</td>
-                        <td className='font-weight-light'>{carbsCalPer100}</td>
+                        <td>from fat</td>
+                        <td>{fatCalTotal}</td>
+                      </tr>
+                      <tr>
+                        <td>from carbs</td>
+                        <td>{carbsCalTotal}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Kcal per 100g</strong>
+                        </td>
+                        <td>
+                          <strong>{calPer100g}</strong>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>from protein</td>
+                        <td>{proteinCalPer100}</td>
+                      </tr>
+                      <tr>
+                        <td>from fat</td>
+                        <td>{fatCalPer100}</td>
+                      </tr>
+                      <tr>
+                        <td>from carbs</td>
+                        <td>{carbsCalPer100}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -117,10 +119,10 @@ export const AnalysisModal: FunctionComponent<AnalysisModalProps> = ({
           <div className='modal-footer'>
             <button
               type='button'
-              className='btn btn-outline-secondary'
+              className='btn btn-cool btn-cool-cancel'
               data-dismiss='modal'
             >
-              Close
+              <p>Close</p>
             </button>
           </div>
         </div>

@@ -78,11 +78,11 @@ const RecipeItem: FunctionComponent<RecipeConnectedProps> = ({
                 <td className='border-top-0'>{data.calories.total}</td>
               </tr>
               <tr>
-                <td>Kcal per serving</td>
+                <td>per serving</td>
                 <td>{data.calories.perServing}</td>
               </tr>
               <tr>
-                <td>Kcal per 100g</td>
+                <td>per 100g</td>
                 <td>{data.calories.per100g}</td>
               </tr>
             </tbody>
@@ -102,7 +102,7 @@ const RecipeItem: FunctionComponent<RecipeConnectedProps> = ({
             onClick={handleSaveRecipe}
           >
             <span
-              className='spinner-border spinner-border-sm'
+              className='spinner-border spinner-border-sm align-middle'
               role='status'
               aria-hidden='true'
               style={
