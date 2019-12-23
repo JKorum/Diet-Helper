@@ -35,8 +35,8 @@ else if (typeof pass === 'string') {
 app.use(express_1.default.json());
 app.use('/api', AppRouter_1.AppRouter.getInstance());
 //serve static assets in production
-if (true) {
-    app.use(express_1.default.static(path_1.default.join(__dirname, '../../client/build/public')));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../../client/build')));
     app.get('*', function (req, res) {
         res.sendFile(path_1.default.join(__dirname, '../../client/build/index.html'));
     });
