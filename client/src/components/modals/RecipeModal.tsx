@@ -36,7 +36,7 @@ const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
         /* no -> proceed */
         await dispatch(saveCollectionItem(data.recipeToSave, true))
         setLoading(false)
-        setAddBtnStatus('Added')
+        setAddBtnStatus('Collected')
       } else {
         /* yes -> stop */
         setLoading(false)
@@ -61,7 +61,7 @@ const RecipeModal: FunctionComponent<RecipeModalConnectedProps> = ({
           const styleAttr = attrMap.getNamedItem('style')
           if (styleAttr) {
             if (styleAttr.value.includes('display: none;')) {
-              setAddBtnStatus('Add To Collection')
+              setAddBtnStatus('Collect')
 
               if (error && dispatch) {
                 dispatch({
