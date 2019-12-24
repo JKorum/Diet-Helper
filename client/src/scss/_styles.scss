@@ -38,31 +38,37 @@ span.nav-link {
   }
 }
 
-/* background */
+/* background static version */
 .background {
   background: url('../media/berries.png') repeat;
-  animation: slide 50s linear infinite;
-  -webkit-animation: slide 50s linear infinite;
   background-size: 600px 600px;
 }
 
-@keyframes slide {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 400px 400px;
-  }
-}
+/* background animated version */
+// .background {
+//   background: url('../media/berries.png') repeat;
+//   animation: slide 50s linear infinite;
+//   -webkit-animation: slide 50s linear infinite;
+//   background-size: 600px 600px;
+// }
 
-@-webkit-keyframes slide {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 400px 400px;
-  }
-}
+// @keyframes slide {
+//   from {
+//     background-position: 0 0;
+//   }
+//   to {
+//     background-position: 400px 400px;
+//   }
+// }
+
+// @-webkit-keyframes slide {
+//   from {
+//     background-position: 0 0;
+//   }
+//   to {
+//     background-position: 400px 400px;
+//   }
+// }
 
 /* landing */
 .jumbotron {
